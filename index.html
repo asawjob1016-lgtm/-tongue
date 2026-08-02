@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>カメレオンバブルパズル</title>
+
+<style>
+body{
+    margin:0;
+    background:#1d2430;
+    overflow:hidden;
+    font-family:sans-serif;
+    touch-action:manipulation;
+}
+
+#game{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+}
+
+#header{
+    position:absolute;
+    top:10px;
+    left:10px;
+    color:white;
+    z-index:100;
+    font-weight:bold;
+}
+
+#startBtn{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    padding:20px 40px;
+    font-size:24px;
+    border:none;
+    border-radius:15px;
+    background:#44cc66;
+    color:white;
+    z-index:500;
+}
+
+#grid{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    top:60px;
+}
+
+.cell{
+    position:absolute;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    box-sizing:border-box;
+    border:2px solid rgba(255,255,255,.25);
+}
+
+.red{background:#ff5b5b;}
+.blue{background:#55aaff;}
+.green{background:#55dd77;}
+.yellow{background:#ffd84d;}
+.purple{background:#bb66ff;}
+
+.bomb{
+    background:black !important;
+    box-shadow:0 0 10px #fff;
+}
+
+#chameleon{
+    position:absolute;
+    left:10px;
+    bottom:30px;
+    font-size:60px;
+    z-index:30;
+}
+
+#tongue{
+    position:absolute;
+    height:6px;
+    background:#ff69b4;
+    transform-origin:left center;
+    display:none;
+    z-index:20;
+}
+
+#shuffleBtn{
+    position:absolute;
+    right:20px;
+    bottom:20px;
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:none;
+    font-size:30px;
+    background:#fff;
+    z-index:100;
+}
+
+#message{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    color:white;
+    font-size:36px;
+    font-weight:bold;
+    display:none;
+    z-index:400;
+}
+</style>
+</head>
+<body>
+
+<div id="game">
+
+<div id="header">
+    <div>ステージ: <span id="stage">1</span></div>
+    <div>舌: <span id="moves">30</span></div>
+    <div>シャッフル: <span id="shuffle">3</span></div>
+</div>
+
+<button id="startBtn">START</button>
+
+<div id="grid"></div>
+
+<div id="chameleon">🦎</div>
+<div id="tongue"></div>
+
+<button id="shuffleBtn">♻️</button>
+
+<div id="message"></div>
+
+</div>
+
+<script>
+
+const ROWS = 12;
+const COLS = 8;
+const SIZE = 40;
+
+const COLORS = [
+    "red",
+    "blue",
+    "green",
+    "yellow",
+    "purple"
+];
+
+let board=[];
+let moves=30;
+let shuffleCount=3;
+let stage=1;
+let running=false;
+
+const grid=document.getElementById("grid");
+const movesText=document.getElementById("moves");
+const shuffleText=document.getElementById("shuffle");
+const stageText=document.getElementById("stage");
+const msg=document.getElementById("message");
+const tongue=document.getElementById("tongue");
+
+grid.style.width=(COLS*SIZE)+"px";
+grid.style.height=(ROWS*SIZE)+"px";
+
+function randomColor(){
+    return COLORS[Math.floor(Math.random()*COLORS.length)];
+}
+
+function createBoard(){
+
+    board=[];
+
+    for(let r=0;r<ROWS;r++){
+        let row=[];
+        for(let c=0;c<COLS;c++){
+
+            if(r<5){
+                row.push(randomColor());
+            }else{
+                row.push(null);
+            }
+
+        }
+        board.push(row);
+    }
+
+    draw();
+}
+
+function draw(){
+
+    grid.innerHTML="";
+
+    for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+
+            let v=board[r][c];
+            if(!v) continue;
+
+            let d=document.createElement("div");
+            d.className="cell "+v;
+
+            d.style.left=(c*SIZE)+"px";
+            d.style.top=(r*SIZE)+"px";
+
+            d.dataset.r=r;
+            d.dataset.c=c;
+
+            grid.appendChild(d);
+        }
+    }
+
+    updateUI();
+}
+
+function updateUI(){
+    movesText.textContent=moves;
+    shuffleText.textContent=shuffleCount;
+    stageText.textContent=stage;
+}
+
+function flood(r,c,color){
+
+    let stack=[[r,c]];
+    let visited=new Set();
+    let result=[];
+
+    while(stack.length){
+
+        let [y,x]=stack.pop();
+        let key=y+"_"+x;
+
+        if(visited.has(key)) continue;
+        visited.add(key);
+
+        if(y<0||y>=ROWS||x<0||x>=COLS) continue;
+        if(board[y][x]!==color) continue;
+
+        result.push([y,x]);
+
+        stack.push([y+1,x]);
+        stack.push([y-1,x]);
+        stack.push([y,x+1]);
+        stack.push([y,x-1]);
+    }
+
+    return result;
+}
+
+function removeGroup(group){
+
+    let bombPos=null;
+
+    if(group.length>=5){
+
+        let center=group[Math.floor(group.length/2)];
+        bombPos=center;
+    }
+
+    group.forEach(([r,c])=>{
+        board[r][c]=null;
+    });
+
+    if(bombPos){
+        board[bombPos[0]][bombPos[1]]="bomb";
+    }
+
+    applyGravity();
+}
+
+function applyGravity(){
+
+    for(let c=0;c<COLS;c++){
+
+        let col=[];
+
+        for(let r=ROWS-1;r>=0;r--){
+            if(board[r][c]){
+                col.push(board[r][c]);
+            }
+        }
+
+        for(let r=ROWS-1;r>=0;r--){
+
+            board[r][c]=col[ROWS-1-r]||null;
+        }
+    }
+
+    draw();
+
+    checkWin();
+}
+
+function activateBomb(r,c){
+
+    for(let y=r-1;y<=r+1;y++){
+        for(let x=c-1;x<=c+1;x++){
+
+            if(
+                y>=0&&y<ROWS&&
+                x>=0&&x<COLS
+            ){
+                board[y][x]=null;
+            }
+        }
+    }
+
+    applyGravity();
+}
+
+function shootTongue(target){
+
+    if(!running) return;
+    if(moves<=0) return;
+
+    const rect=target.getBoundingClientRect();
+
+    const sx=40;
+    const sy=window.innerHeight-60;
+
+    const ex=rect.left+20;
+    const ey=rect.top+20;
+
+    const dx=ex-sx;
+    const dy=ey-sy;
+
+    const len=Math.sqrt(dx*dx+dy*dy);
+
+    tongue.style.display="block";
+    tongue.style.left=sx+"px";
+    tongue.style.top=sy+"px";
+    tongue.style.width=len+"px";
+
+    const angle=Math.atan2(dy,dx)*180/Math.PI;
+    tongue.style.transform=`rotate(${angle}deg)`;
+
+    setTimeout(()=>{
+        tongue.style.display="none";
+    },150);
+
+    moves--;
+
+    const r=parseInt(target.dataset.r);
+    const c=parseInt(target.dataset.c);
+
+    if(board[r][c]==="bomb"){
+        activateBomb(r,c);
+        updateUI();
+        checkLose();
+        return;
+    }
+
+    const color=board[r][c];
+    const group=flood(r,c,color);
+
+    if(group.length>=3){
+        removeGroup(group);
+    }
+
+    updateUI();
+    checkLose();
+}
+
+function addRow(){
+
+    for(let r=ROWS-1;r>0;r--){
+        board[r]=[...board[r-1]];
+    }
+
+    let row=[];
+
+    for(let c=0;c<COLS;c++){
+        row.push(randomColor());
+    }
+
+    board[0]=row;
+
+    draw();
+
+    for(let c=0;c<COLS;c++){
+        if(board[ROWS-1][c]){
+            gameOver();
+            return;
+        }
+    }
+}
+
+function shuffleBoard(){
+
+    if(!running) return;
+    if(shuffleCount<=0) return;
+
+    shuffleCount--;
+
+    let vals=[];
+
+    for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+            if(board[r][c]){
+                vals.push(board[r][c]);
+            }
+        }
+    }
+
+    vals.sort(()=>Math.random()-0.5);
+
+    let idx=0;
+
+    for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+
+            if(board[r][c]){
+                board[r][c]=vals[idx++];
+            }
+        }
+    }
+
+    draw();
+}
+
+function checkWin(){
+
+    let remain=0;
+
+    for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+            if(board[r][c]) remain++;
+        }
+    }
+
+    if(remain===0){
+
+        running=false;
+
+        msg.style.display="block";
+        msg.textContent="STAGE CLEAR";
+
+        setTimeout(()=>{
+
+            msg.style.display="none";
+
+            stage++;
+
+            moves=30;
+            shuffleCount=3;
+
+            createBoard();
+
+            running=true;
+
+        },1500);
+    }
+}
+
+function checkLose(){
+
+    if(moves<=0){
+        gameOver();
+    }
+}
+
+function gameOver(){
+
+    running=false;
+
+    msg.style.display="block";
+    msg.textContent="GAME OVER";
+}
+
+grid.addEventListener("click",(e)=>{
+
+    if(
+        e.target.classList.contains("cell")
+    ){
+        shootTongue(e.target);
+    }
+});
+
+document
+.getElementById("shuffleBtn")
+.addEventListener("click",shuffleBoard);
+
+document
+.getElementById("startBtn")
+.addEventListener("click",()=>{
+
+    stage=1;
+    moves=30;
+    shuffleCount=3;
+
+    createBoard();
+
+    running=true;
+
+    msg.style.display="none";
+
+    document.getElementById("startBtn").style.display="none";
+
+    startSpawner();
+});
+
+let spawnTimer;
+
+function startSpawner(){
+
+    clearInterval(spawnTimer);
+
+    spawnTimer=setInterval(()=>{
+
+        if(!running) return;
+
+        let speed=Math.max(
+            6000-(stage*300),
+            1500
+        );
+
+        clearInterval(spawnTimer);
+
+        addRow();
+
+        startSpawner();
+
+    },Math.max(
+        6000-(stage*300),
+        1500
+    ));
+}
+
+</script>
+</body>
+</html>
