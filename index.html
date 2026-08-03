@@ -182,3 +182,210 @@ START
 </button>
 
 <script>
+
+const canvas =
+document.getElementById("canvas");
+
+const ctx =
+canvas.getContext("2d");
+
+let W;
+let H;
+
+function resize(){
+
+W = window.innerWidth;
+H = window.innerHeight;
+
+canvas.width = W;
+canvas.height = H;
+
+}
+
+resize();
+
+window.addEventListener(
+"resize",
+resize
+);
+
+const stageText =
+document.getElementById(
+"stage"
+);
+
+const scoreText =
+document.getElementById(
+"score"
+);
+
+const movesText =
+document.getElementById(
+"moves"
+);
+
+const shuffleText =
+document.getElementById(
+"shuffle"
+);
+
+const message =
+document.getElementById(
+"message"
+);
+
+const startButton =
+document.getElementById(
+"startButton"
+);
+
+const shuffleButton =
+document.getElementById(
+"shuffleButton"
+);
+
+const COLORS = [
+
+"#ff595e",
+"#ffca3a",
+"#8ac926",
+"#1982c4",
+"#6a4c93"
+
+];
+
+const ROWS = 12;
+const COLS = 8;
+
+let CELL = 50;
+
+let board = [];
+
+let stage = 1;
+let score = 0;
+
+let moves = 30;
+let shuffleCount = 3;
+
+let running = false;
+
+let boardX = 0;
+let boardY = 90;
+
+function updateLayout(){
+
+CELL = Math.min(
+60,
+Math.floor(
+W/(COLS+3)
+)
+);
+
+boardX =
+(W-(COLS*CELL))/2;
+
+}
+
+updateLayout();
+
+window.addEventListener(
+"resize",
+updateLayout
+);
+
+function rand(max){
+
+return Math.floor(
+Math.random()*max
+);
+
+}
+
+function randomColor(){
+
+return COLORS[
+rand(COLORS.length)
+];
+
+}
+
+function inside(r,c){
+
+return (
+r>=0 &&
+r<ROWS &&
+c>=0 &&
+c<COLS
+);
+
+}
+
+function createBoard(){
+
+board=[];
+
+for(
+let r=0;
+r<ROWS;
+r++
+){
+
+let row=[];
+
+for(
+let c=0;
+c<COLS;
+c++
+){
+
+if(r<5){
+
+row.push(
+randomColor()
+);
+
+}else{
+
+row.push(null);
+
+}
+
+}
+
+board.push(row);
+
+}
+
+guaranteedMatch();
+
+}
+
+function guaranteedMatch(){
+
+let col =
+rand(COLS-2);
+
+let color =
+randomColor();
+
+board[4][col] = color;
+board[4][col+1] = color;
+board[4][col+2] = color;
+
+}
+
+function updateUI(){
+
+stageText.textContent =
+stage;
+
+scoreText.textContent =
+score;
+
+movesText.textContent =
+moves;
+
+shuffleText.textContent =
+shuffleCount;
+
+}
