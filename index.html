@@ -66,3 +66,208 @@ content="width=device-width,initial-scale=1.0,user-scalable=no">
 
 </body>
 </html>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#182330;
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+#gameContainer{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+}
+
+#gameCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    touch-action:none;
+}
+
+#ui{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+}
+
+#topBar{
+    position:absolute;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:12px;
+}
+
+#leftInfo{
+    position:absolute;
+    top:12px;
+    left:12px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.panel{
+    background:rgba(0,0,0,.45);
+    color:white;
+    padding:10px 16px;
+    border-radius:14px;
+    font-weight:700;
+    min-width:95px;
+    text-align:center;
+    backdrop-filter:blur(6px);
+    box-shadow:
+    0 4px 10px rgba(0,0,0,.25);
+}
+
+.panel span{
+    display:block;
+    margin-top:4px;
+    font-size:22px;
+}
+
+#comboText{
+    position:absolute;
+    top:90px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#ffe84a;
+    font-size:36px;
+    font-weight:900;
+    text-shadow:
+    0 0 10px rgba(255,232,74,.8);
+    display:none;
+}
+
+#message{
+    position:absolute;
+    top:42%;
+    left:50%;
+    transform:
+    translate(-50%,-50%);
+
+    color:white;
+
+    font-size:48px;
+    font-weight:900;
+
+    text-align:center;
+
+    text-shadow:
+    0 0 20px rgba(255,255,255,.8);
+
+    display:none;
+}
+
+#startButton{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    width:220px;
+    height:70px;
+
+    border:none;
+    border-radius:18px;
+
+    background:#3ed06a;
+
+    color:white;
+
+    font-size:28px;
+    font-weight:900;
+
+    pointer-events:auto;
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,.35);
+}
+
+#shuffleButton{
+
+    position:absolute;
+
+    right:18px;
+    bottom:18px;
+
+    width:74px;
+    height:74px;
+
+    border:none;
+    border-radius:50%;
+
+    font-size:32px;
+
+    background:white;
+
+    pointer-events:auto;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.35);
+}
+
+.fadePop{
+    animation:fadePop .8s ease;
+}
+
+@keyframes fadePop{
+
+    0%{
+        transform:
+        translateX(-50%)
+        scale(.4);
+        opacity:0;
+    }
+
+    50%{
+        transform:
+        translateX(-50%)
+        scale(1.2);
+        opacity:1;
+    }
+
+    100%{
+        transform:
+        translateX(-50%)
+        scale(1);
+        opacity:0;
+    }
+}
+
+@media (max-width:480px){
+
+    #message{
+        font-size:34px;
+    }
+
+    #comboText{
+        font-size:28px;
+    }
+
+    .panel{
+        min-width:82px;
+        padding:8px 12px;
+    }
+}
