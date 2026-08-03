@@ -6,34 +6,179 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width,initial-scale=1.0,user-scalable=no">
 
-<title>カメレオンバブル</title>
+<title>
+カメレオンバブル
+</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+width:100%;
+height:100%;
+overflow:hidden;
+background:#182330;
+font-family:sans-serif;
+}
+
+#game{
+position:relative;
+width:100vw;
+height:100vh;
+overflow:hidden;
+}
+
+canvas{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+}
+
+#startButton{
+
+position:absolute;
+
+left:50%;
+top:50%;
+
+transform:
+translate(-50%,-50%);
+
+width:220px;
+height:80px;
+
+border:none;
+
+border-radius:20px;
+
+background:#36d26f;
+
+color:white;
+
+font-size:30px;
+font-weight:bold;
+
+z-index:100;
+}
+
+#shuffleButton{
+
+position:absolute;
+
+right:20px;
+bottom:20px;
+
+width:70px;
+height:70px;
+
+border:none;
+
+border-radius:50%;
+
+font-size:32px;
+
+background:white;
+
+z-index:100;
+display:none;
+}
+
+#message{
+
+position:absolute;
+
+top:40%;
+left:50%;
+
+transform:
+translate(-50%,-50%);
+
+color:white;
+
+font-size:42px;
+font-weight:bold;
+
+display:none;
+
+z-index:200;
+}
+
+#topInfo{
+
+position:absolute;
+
+top:10px;
+left:10px;
+
+color:white;
+
+font-size:18px;
+
+font-weight:bold;
+
+z-index:100;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<h1>カメレオンバブル</h1>
+<div id="game">
+
+<canvas id="canvas"></canvas>
+
+<div id="topInfo">
+
+<div>
+STAGE :
+<span id="stage">
+1
+</span>
+</div>
+
+<div>
+SCORE :
+<span id="score">
+0
+</span>
+</div>
+
+<div>
+舌 :
+<span id="moves">
+30
+</span>
+</div>
+
+<div>
+♻ :
+<span id="shuffle">
+3
+</span>
+</div>
+
+</div>
+
+<div id="message"></div>
 
 <button id="startButton">
 START
 </button>
 
-<script src="game.js"></script>
+<button id="shuffleButton">
+♻️
+</button>
 
-</body>
-
-</html>
-
-console.log("ゲーム開始");
-
-document
-.getElementById("startButton")
-.addEventListener(
-"click",
-()=>{
-    alert("正常動作");
-});
+<script>
