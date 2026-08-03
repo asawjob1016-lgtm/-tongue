@@ -596,3 +596,432 @@ color
 
     return result;
 }
+
+/* ==========================
+   BOMB
+========================== */
+
+function createBomb(){
+
+    let empty=[];
+
+    for(
+        let r=0;
+        r<ROWS;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<COLS;
+            c++
+        ){
+
+            if(
+                board[r][c]===null
+            ){
+                empty.push([
+                    r,
+                    c
+                ]);
+            }
+        }
+    }
+
+    if(
+        empty.length===0
+    ){
+        return;
+    }
+
+    const pos =
+    empty[
+    rand(empty.length)
+    ];
+
+    board[
+        pos[0]
+    ][
+        pos[1]
+    ] = "BOMB";
+}
+
+/* ==========================
+   REMOVE GROUP
+========================== */
+
+function removeGroup(
+group
+){
+
+    if(
+        group.length < 3
+    ){
+        return false;
+    }
+
+    combo++;
+
+    let gained =
+    group.length * 10;
+
+    gained *= combo;
+
+    score += gained;
+
+    if(
+        group.length >= 5
+    ){
+        createBomb();
+    }
+
+    for(
+        const item
+        of group
+    ){
+
+        const r =
+        item[0];
+
+        const c =
+        item[1];
+
+        board[r][c] =
+        null;
+    }
+
+    applyGravity();
+
+    showCombo(
+        combo,
+        gained
+    );
+
+    return true;
+}
+
+/* ==========================
+   GRAVITY
+========================== */
+
+function applyGravity(){
+
+    for(
+        let c=0;
+        c<COLS;
+        c++
+    ){
+
+        let stack=[];
+
+        for(
+            let r=ROWS-1;
+            r>=0;
+            r--
+        ){
+
+            if(
+                board[r][c]
+            ){
+                stack.push(
+                    board[r][c]
+                );
+            }
+        }
+
+        for(
+            let r=ROWS-1;
+            r>=0;
+            r--
+        ){
+
+            const idx =
+            ROWS-1-r;
+
+            board[r][c] =
+            stack[idx]
+            || null;
+        }
+    }
+
+    updateUI();
+
+    checkWin();
+}
+
+/* ==========================
+   BOMB EXPLOSION
+========================== */
+
+function activateBomb(
+r,
+c
+){
+
+    for(
+        let y=r-1;
+        y<=r+1;
+        y++
+    ){
+
+        for(
+            let x=c-1;
+            x<=c+1;
+            x++
+        ){
+
+            if(
+                inside(y,x)
+            ){
+
+                board[y][x] =
+                null;
+            }
+        }
+    }
+
+    score += 150;
+
+    applyGravity();
+
+    updateUI();
+}
+
+/* ==========================
+   COMBO
+========================== */
+
+function showCombo(
+comboCount,
+gain
+){
+
+    comboText.style.display =
+    "block";
+
+    comboText.classList.remove(
+        "fadePop"
+    );
+
+    void comboText.offsetWidth;
+
+    comboText.classList.add(
+        "fadePop"
+    );
+
+    comboText.innerHTML =
+    comboCount +
+    " COMBO<br>+" +
+    gain;
+
+    setTimeout(()=>{
+
+        comboText.style.display =
+        "none";
+
+    },800);
+}
+
+/* ==========================
+   AUTO SHUFFLE CHECK
+========================== */
+
+function hasMove(){
+
+    for(
+        let r=0;
+        r<ROWS;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<COLS;
+            c++
+        ){
+
+            const color =
+            board[r][c];
+
+            if(
+                !color
+            ) continue;
+
+            if(
+                color==="BOMB"
+            ) continue;
+
+            const group =
+            findGroup(
+                r,
+                c,
+                color
+            );
+
+            if(
+                group.length>=3
+            ){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/* ==========================
+   SHUFFLE
+========================== */
+
+function shuffleBoard(){
+
+    if(
+        shuffleCount<=0
+    ){
+        return;
+    }
+
+    let values=[];
+
+    for(
+        let r=0;
+        r<ROWS;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<COLS;
+            c++
+        ){
+
+            if(
+                board[r][c]
+            ){
+
+                values.push(
+                    board[r][c]
+                );
+            }
+        }
+    }
+
+    values.sort(
+        ()=>Math.random()-0.5
+    );
+
+    let index=0;
+
+    for(
+        let r=0;
+        r<ROWS;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<COLS;
+            c++
+        ){
+
+            if(
+                board[r][c]
+            ){
+
+                board[r][c] =
+                values[index++];
+
+            }
+        }
+    }
+
+    shuffleCount--;
+
+    updateUI();
+}
+
+/* ==========================
+   AUTO SHUFFLE
+========================== */
+
+function ensurePlayable(){
+
+    if(
+        hasMove()
+    ){
+        return;
+    }
+
+    let values=[];
+
+    for(
+        let r=0;
+        r<ROWS;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<COLS;
+            c++
+        ){
+
+            if(
+                board[r][c]
+            ){
+
+                values.push(
+                    board[r][c]
+                );
+            }
+        }
+    }
+
+    values.sort(
+        ()=>Math.random()-0.5
+    );
+
+    let i=0;
+
+    for(
+        let r=0;
+        r<ROWS;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<COLS;
+            c++
+        ){
+
+            if(
+                board[r][c]
+            ){
+
+                board[r][c] =
+                values[i++];
+
+            }
+        }
+    }
+}
+
+/* ==========================
+   UI UPDATE
+========================== */
+
+function updateUI(){
+
+    stageValue.textContent =
+    stage;
+
+    scoreValue.textContent =
+    score;
+
+    movesValue.textContent =
+    moves;
+
+    shuffleValue.textContent =
+    shuffleCount;
+}
