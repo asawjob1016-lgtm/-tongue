@@ -401,6 +401,43 @@ row.push(null);
 board.push(row);
 }
 
+setInterval(()=>{
+
+addRow();
+
+},10000);
+
+function getDropSpeed(){
+
+return Math.max(
+10000-(stage*500),
+3000
+);
+
+}
+
+
+function checkGameOver(){
+
+for(
+let c=0;
+c<COLS;
+c++
+){
+
+if(
+board[ROWS-1][c]
+){
+
+showMessage(
+"GAME OVER"
+);
+
+return;
+}
+}
+}
+
 let color=
 COLORS[rand(COLORS.length)];
 
