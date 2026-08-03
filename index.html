@@ -271,3 +271,328 @@ body{
         padding:8px 12px;
     }
 }
+
+/* =====================================
+   CHAMELEON BUBBLE PUZZLE
+   Part 3-1
+===================================== */
+
+const canvas =
+document.getElementById("gameCanvas");
+
+const ctx =
+canvas.getContext("2d");
+
+let W;
+let H;
+
+function resizeCanvas(){
+
+    W = window.innerWidth;
+    H = window.innerHeight;
+
+    canvas.width = W;
+    canvas.height = H;
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+
+/* ==========================
+   UI
+========================== */
+
+const stageValue =
+document.getElementById(
+"stageValue"
+);
+
+const scoreValue =
+document.getElementById(
+"scoreValue"
+);
+
+const movesValue =
+document.getElementById(
+"movesValue"
+);
+
+const shuffleValue =
+document.getElementById(
+"shuffleValue"
+);
+
+const comboText =
+document.getElementById(
+"comboText"
+);
+
+const message =
+document.getElementById(
+"message"
+);
+
+const startButton =
+document.getElementById(
+"startButton"
+);
+
+const shuffleButton =
+document.getElementById(
+"shuffleButton"
+);
+
+/* ==========================
+   GAME SETTINGS
+========================== */
+
+const COLS = 8;
+const ROWS = 12;
+
+const COLORS = [
+"#ff595e",
+"#ffca3a",
+"#8ac926",
+"#1982c4",
+"#6a4c93"
+];
+
+let CELL = 52;
+
+let board = [];
+
+let stage = 1;
+let score = 0;
+
+let moves = 30;
+let shuffleCount = 3;
+
+let running = false;
+
+let combo = 0;
+
+/* ==========================
+   CHAMELEON
+========================== */
+
+const chameleon = {
+
+    x: 120,
+    y: 0,
+
+    tongueActive:false,
+    tongueLength:0,
+
+    tongueAngle:0
+};
+
+function updateChameleon(){
+
+    chameleon.y =
+    H - 130;
+}
+
+updateChameleon();
+
+/* ==========================
+   BOARD POSITION
+========================== */
+
+let boardX;
+let boardY;
+
+function updateBoardPos(){
+
+    CELL =
+    Math.min(
+        58,
+        Math.floor(
+        W/(COLS+3)
+        )
+    );
+
+    boardX =
+    (W - COLS*CELL)/2;
+
+    boardY = 70;
+}
+
+updateBoardPos();
+
+window.addEventListener(
+"resize",
+()=>{
+    updateBoardPos();
+    updateChameleon();
+}
+);
+
+/* ==========================
+   HELPERS
+========================== */
+
+function rand(max){
+
+    return Math.floor(
+        Math.random()*max
+    );
+}
+
+function randomColor(){
+
+    return COLORS[
+        rand(COLORS.length)
+    ];
+}
+
+function inside(r,c){
+
+    return (
+        r>=0 &&
+        r<ROWS &&
+        c>=0 &&
+        c<COLS
+    );
+}
+
+/* ==========================
+   CREATE BOARD
+========================== */
+
+function createBoard(){
+
+    board = [];
+
+    for(
+        let r=0;
+        r<ROWS;
+        r++
+    ){
+
+        let row=[];
+
+        for(
+            let c=0;
+            c<COLS;
+            c++
+        ){
+
+            if(r<5){
+
+                row.push(
+                    randomColor()
+                );
+
+            }else{
+
+                row.push(null);
+            }
+        }
+
+        board.push(row);
+    }
+
+    createGuaranteedMatch();
+}
+
+/* ==========================
+   START MATCH
+========================== */
+
+function createGuaranteedMatch(){
+
+    const startCol =
+    rand(COLS-2);
+
+    const color =
+    randomColor();
+
+    board[4][startCol] = color;
+    board[4][startCol+1] = color;
+    board[4][startCol+2] = color;
+}
+
+/* ==========================
+   FIND GROUP
+========================== */
+
+function findGroup(
+r,
+c,
+color
+){
+
+    let stack = [
+        [r,c]
+    ];
+
+    let result = [];
+
+    let visited =
+    new Set();
+
+    while(
+        stack.length
+    ){
+
+        const current =
+        stack.pop();
+
+        const y =
+        current[0];
+
+        const x =
+        current[1];
+
+        const key =
+        y + "_" + x;
+
+        if(
+            visited.has(key)
+        ){
+            continue;
+        }
+
+        visited.add(key);
+
+        if(
+            !inside(y,x)
+        ){
+            continue;
+        }
+
+        if(
+            board[y][x]
+            !== color
+        ){
+            continue;
+        }
+
+        result.push([
+            y,
+            x
+        ]);
+
+        stack.push(
+            [y+1,x]
+        );
+
+        stack.push(
+            [y-1,x]
+        );
+
+        stack.push(
+            [y,x+1]
+        );
+
+        stack.push(
+            [y,x-1]
+        );
+    }
+
+    return result;
+}
