@@ -2,16 +2,63 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>カメレオンバブル Ver1</title>
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>Chameleon's Tongue</title>
 
 <style>
-html,body{
+
+*{
 margin:0;
-height:100%;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
 overflow:hidden;
-background:#182330;
+background:#dff6ff;
 font-family:sans-serif;
+touch-action:none;
+}
+
+canvas{
+display:block;
+background:linear-gradient(
+to bottom,
+#dff6ff,
+#ffffff
+);
+}
+
+#titleScreen{
+position:absolute;
+left:0;
+top:0;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:white;
+z-index:10;
+}
+
+#gameTitle{
+font-size:48px;
+font-weight:bold;
+color:#2d8f2d;
+margin-bottom:30px;
+text-align:center;
+}
+
+#startBtn{
+padding:18px 40px;
+font-size:28px;
+border:none;
+border-radius:20px;
+background:#32cd32;
 color:white;
 }
 
@@ -19,439 +66,62 @@ color:white;
 position:absolute;
 top:10px;
 left:10px;
-z-index:10;
+font-size:22px;
 font-weight:bold;
-}
-
-#msg{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:40px;
 display:none;
 }
 
-canvas{
-display:block;
-width:100vw;
-height:100vh;
-}
 </style>
 </head>
-
 <body>
 
-<div id="ui">
-<div>STAGE <span id="stage">1</span></div>
-<div>SCORE <span id="score">0</span></div>
-<div>MOVE <span id="move">30</span></div>
+<div id="titleScreen">
+
+<div id="gameTitle">
+Chameleon's Tongue
 </div>
 
-<div id="msg"></div>
+<canvas
+id="titleCanvas"
+width="350"
+height="250">
+</canvas>
 
-<canvas id="game"></canvas>
+<br>
+
+<button id="startBtn">
+START
+</button>
+
+</div>
+
+<div id="ui">
+Tongue : <span id="moves">30</span>
+</div>
+
+<canvas id="gameCanvas"></canvas>
 
 <script>
 
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
+const canvas =
+document.getElementById("gameCanvas");
+
+const ctx =
+canvas.getContext("2d");
 
 function resize(){
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
 }
+
 resize();
-addEventListener("resize",resize);
 
-const ROWS=10;
-const COLS=8;
-const SIZE=50;
-
-const COLORS=[
-"#ff595e",
-"#ffca3a",
-"#8ac926",
-"#1982c4",
-"#6a4c93"
-];
-
-let board=[];
-let score=0;
-let moves=30;
-let stage=1;
-
-function rand(n){
-return Math.floor(Math.random()*n);
-}
-
-function createBoard(){
-
-board=[];
-
-for(let r=0;r<ROWS;r++){
-
-let row=[];
-
-for(let c=0;c<COLS;c++){
-
-row.push(
-COLORS[rand(COLORS.length)]
+window.addEventListener(
+"resize",
+resize
 );
-
-}
-
-board.push(row);
-}
-
-let color=
-COLORS[rand(COLORS.length)];
-
-let start=
-rand(COLS-2);
-
-board[ROWS-1][start]=color;
-board[ROWS-1][start+1]=color;
-board[ROWS-1][start+2]=color;
-}
-
-function draw(){
-
-ctx.clearRect(
-0,0,
-canvas.width,
-canvas.height
-);
-
-let offsetX=
-(canvas.width-
-COLS*SIZE)/2;
-
-let offsetY=120;
-
-for(let r=0;r<ROWS;r++){
-
-for(let c=0;c<COLS;c++){
-
-let color=
-board[r][c];
-
-if(!color) continue;
-
-let x=
-offsetX+
-c*SIZE;
-
-let y=
-offsetY+
-r*SIZE;
-
-ctx.beginPath();
-
-ctx.fillStyle=color;
-
-ctx.arc(
-x+SIZE/2,
-y+SIZE/2,
-SIZE/2-3,
-0,
-Math.PI*2
-);
-
-ctx.fill();
-
-ctx.beginPath();
-
-ctx.fillStyle=
-"rgba(255,255,255,.4)";
-
-ctx.arc(
-x+15,
-y+15,
-8,
-0,
-Math.PI*2
-);
-
-ctx.fill();
-}
-}
-
-drawChameleon();
-}
-
-function drawChameleon(){
-
-ctx.font="80px serif";
-
-ctx.fillText(
-"🦎",
-20,
-canvas.height-40
-);
-}
-
-function flood(r,c,color){
-
-let stack=[[r,c]];
-let result=[];
-let seen={};
-
-while(stack.length){
-
-let p=stack.pop();
-
-let y=p[0];
-let x=p[1];
-
-let key=
-y+"_"+x;
-
-if(seen[key])
-continue;
-
-seen[key]=true;
-
-if(
-y<0||y>=ROWS||
-x<0||x>=COLS
-)
-continue;
-
-if(
-board[y][x]!==color
-)
-continue;
-
-result.push([y,x]);
-
-stack.push([y+1,x]);
-stack.push([y-1,x]);
-stack.push([y,x+1]);
-stack.push([y,x-1]);
-}
-
-return result;
-}
-
-function removeGroup(group){
-
-if(group.length<3)
-return;
-
-score+=group.length*10;
-
-for(let p of group){
-
-board[p[0]][p[1]]
-=null;
-}
-
-document
-.getElementById("score")
-.textContent=score;
-
-checkClear();
-}
-
-function checkClear(){
-
-let left=0;
-
-for(let r=0;r<ROWS;r++){
-for(let c=0;c<COLS;c++){
-
-if(board[r][c])
-left++;
-
-}
-}
-
-if(left===0){
-
-stage++;
-
-document
-.getElementById("stage")
-.textContent=stage;
-
-showMessage(
-"STAGE CLEAR"
-);
-
-setTimeout(()=>{
-
-createBoard();
-draw();
-
-},1500);
-}
-}
-
-function showMessage(t){
-
-let m=
-document.getElementById(
-"msg"
-);
-
-m.innerText=t;
-m.style.display="block";
-
-setTimeout(()=>{
-m.style.display="none";
-},1200);
-}
-
-canvas.addEventListener(
-"click",
-e=>{
-
-if(moves<=0)
-return;
-
-let rect=
-canvas.getBoundingClientRect();
-
-let mx=
-e.clientX-
-rect.left;
-
-let my=
-e.clientY-
-rect.top;
-
-let offsetX=
-(canvas.width-
-COLS*SIZE)/2;
-
-let offsetY=120;
-
-let c=
-Math.floor(
-(mx-offsetX)/SIZE
-);
-
-let r=
-Math.floor(
-(my-offsetY)/SIZE
-);
-
-if(
-r<0||
-c<0||
-r>=ROWS||
-c>=COLS
-)
-return;
-
-if(!board[r][c])
-return;
-
-let group=
-flood(
-r,
-c,
-board[r][c]
-);
-
-removeGroup(group);
-
-moves--;
-
-document
-.getElementById("move")
-.textContent=moves;
-
-if(moves<=0){
-
-showMessage(
-"GAME OVER"
-);
-}
-
-draw();
-
-});
-
-function createBoard(){
-
-board=[];
-
-for(let r=0;r<ROWS;r++){
-
-let row=[];
-
-for(let c=0;c<COLS;c++){
-
-if(r<5){
-
-row.push(
-COLORS[rand(COLORS.length)]
-);
-
-}else{
-
-row.push(null);
-
-}
-
-}
-
-board.push(row);
-}
-
-setInterval(()=>{
-
-addRow();
-
-},10000);
-
-function getDropSpeed(){
-
-return Math.max(
-10000-(stage*500),
-3000
-);
-
-}
-
-
-function checkGameOver(){
-
-for(
-let c=0;
-c<COLS;
-c++
-){
-
-if(
-board[ROWS-1][c]
-){
-
-showMessage(
-"GAME OVER"
-);
-
-return;
-}
-}
-}
-
-let color=
-COLORS[rand(COLORS.length)];
-
-let start=
-rand(COLS-2);
-
-board[4][start]=color;
-board[4][start+1]=color;
-board[4][start+2]=color;
-}
-
-draw();
-
-</script>
-
-</body>
-</html>
