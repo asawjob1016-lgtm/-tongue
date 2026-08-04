@@ -159,3 +159,230 @@ document.getElementById("titleCanvas");
 
 const tctx =
 titleCanvas.getContext("2d");
+
+function drawTitleChameleon(){
+
+tctx.clearRect(
+0,
+0,
+titleCanvas.width,
+titleCanvas.height
+);
+
+tctx.save();
+
+tctx.translate(40,20);
+
+/* body */
+
+tctx.fillStyle="#9ad67a";
+tctx.strokeStyle="#4d9b4d";
+tctx.lineWidth=8;
+
+tctx.beginPath();
+
+tctx.moveTo(60,150);
+
+tctx.quadraticCurveTo(
+120,
+60,
+250,
+100
+);
+
+tctx.quadraticCurveTo(
+290,
+130,
+220,
+180
+);
+
+tctx.quadraticCurveTo(
+110,
+210,
+60,
+150
+);
+
+tctx.fill();
+tctx.stroke();
+
+/* tail */
+
+tctx.beginPath();
+
+tctx.arc(
+40,
+165,
+35,
+0,
+Math.PI*2
+);
+
+tctx.stroke();
+
+tctx.beginPath();
+
+tctx.arc(
+40,
+165,
+15,
+0,
+Math.PI*2
+);
+
+tctx.stroke();
+
+/* head */
+
+tctx.beginPath();
+
+tctx.moveTo(
+220,
+95
+);
+
+tctx.lineTo(
+310,
+80
+);
+
+tctx.lineTo(
+275,
+130
+);
+
+tctx.closePath();
+
+tctx.fill();
+tctx.stroke();
+
+/* eye */
+
+tctx.fillStyle="white";
+
+tctx.beginPath();
+
+tctx.arc(
+190,
+85,
+26,
+0,
+Math.PI*2
+);
+
+tctx.fill();
+
+tctx.strokeStyle="#222";
+tctx.lineWidth=3;
+tctx.stroke();
+
+tctx.fillStyle="black";
+
+tctx.beginPath();
+
+tctx.arc(
+190,
+85,
+6,
+0,
+Math.PI*2
+);
+
+tctx.fill();
+
+/* legs */
+
+tctx.strokeStyle="#4d9b4d";
+tctx.lineWidth=8;
+
+for(let i=0;i<4;i++){
+
+let x=110+(i*35);
+
+tctx.beginPath();
+
+tctx.moveTo(
+x,
+170
+);
+
+tctx.lineTo(
+x,
+205
+);
+
+tctx.stroke();
+
+tctx.beginPath();
+
+tctx.moveTo(
+x,
+205
+);
+
+tctx.lineTo(
+x+18,
+205
+);
+
+tctx.stroke();
+
+}
+
+/* tongue */
+
+tctx.strokeStyle="red";
+tctx.lineWidth=10;
+
+tctx.beginPath();
+
+tctx.moveTo(
+275,
+112
+);
+
+tctx.lineTo(
+350,
+95
+);
+
+tctx.stroke();
+
+tctx.restore();
+
+}
+
+drawTitleChameleon();
+
+/* game vars */
+
+let stage=1;
+let moves=30;
+
+let gameStarted=false;
+
+const colors=[
+"#ff5a5a",
+"#4aa3ff",
+"#44cc66",
+"#ffcc33",
+"#b266ff"
+];
+
+const rows=12;
+const cols=8;
+
+let grid=[];
+let bombs=[];
+
+const cellSize=52;
+
+const uiMoves=
+document.getElementById("moves");
+
+const uiStage=
+document.getElementById("stage");
+
+const message=
+document.getElementById("message");
