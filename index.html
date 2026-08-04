@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>Chameleon's Tongue</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+font-family:sans-serif;
+background:#eaf9ff;
+}
+
+canvas{
+display:block;
+}
+
+#titleScreen{
+position:absolute;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:linear-gradient(
+to bottom,
+#dff6ff,
+#ffffff
+);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:100;
+}
+
+#gameTitle{
+font-size:42px;
+font-weight:bold;
+color:#2e8b57;
+text-align:center;
+margin-bottom:20px;
+}
+
+#titleCanvas{
+width:340px;
+height:240px;
+max-width:90%;
+}
+
+#startBtn{
+margin-top:20px;
+padding:18px 45px;
+font-size:28px;
+font-weight:bold;
+border:none;
+border-radius:18px;
+background:#32cd32;
+color:white;
+box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+#ui{
+position:absolute;
+top:10px;
+left:10px;
+z-index:50;
+display:none;
+font-size:20px;
+font-weight:bold;
+color:#222;
+}
+
+#message{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:48px;
+font-weight:bold;
+color:white;
+text-shadow:0 0 10px black;
+display:none;
+z-index:60;
+}
+
+</style>
+</head>
+<body>
+
+<div id="titleScreen">
+
+<div id="gameTitle">
+Chameleon's Tongue
+</div>
+
+<canvas
+id="titleCanvas"
+width="400"
+height="260">
+</canvas>
+
+<button id="startBtn">
+START
+</button>
+
+</div>
+
+<div id="ui">
+Tongue :
+<span id="moves">30</span>
+&nbsp;&nbsp;
+Stage :
+<span id="stage">1</span>
+</div>
+
+<div id="message"></div>
+
+<canvas id="gameCanvas"></canvas>
+
+<script>
+
+const canvas =
+document.getElementById("gameCanvas");
+
+const ctx =
+canvas.getContext("2d");
+
+function resize(){
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+}
+
+resize();
+
+window.addEventListener(
+"resize",
+resize
+);
+
+const titleCanvas =
+document.getElementById("titleCanvas");
+
+const tctx =
+titleCanvas.getContext("2d");
