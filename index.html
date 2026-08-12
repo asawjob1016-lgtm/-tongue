@@ -134,11 +134,11 @@ canvas.getContext("2d");
 
 function drawGameChameleon(){
 
-ctx.clearRect(
+gameCtx.clearRect(
 0,
 0,
-canvas.width,
-canvas.height
+gameCanvas.width,
+gameCanvas.height
 );
 
 ctx.save();
@@ -478,11 +478,11 @@ break;
 }
 function loop(){
 
-ctx.clearRect(
+gameCtx.clearRect(
 0,
 0,
-canvas.width,
-canvas.height
+gameCanvas.width,
+gameCanvas.height
 );
 
 for(const b of bubbles){
