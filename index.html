@@ -370,7 +370,7 @@ function drawBubble(b){
 gameCtx.beginPath();
 gameCtx.fillStyle=b.color;
 
-ctx.arc(
+gamectx.arc(
 b.x,
 b.y,
 20,
@@ -378,11 +378,11 @@ b.y,
 Math.PI*2
 );
 
-ctx.fill();
+gamectx.fill();
 
-ctx.strokeStyle="white";
-ctx.lineWidth=3;
-ctx.stroke();
+gamectx.strokeStyle="white";
+gamectx.lineWidth=3;
+gamectx.stroke();
 
 }
 function drawGameChameleon(){
