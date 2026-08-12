@@ -2,17 +2,15 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Chameleon's Tongue</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
 }
 
 html,body{
@@ -23,34 +21,35 @@ font-family:sans-serif;
 background:#eaf9ff;
 }
 
-canvas{
-display:block;
-}
-
 #titleScreen{
-position:absolute;
+position:fixed;
 left:0;
 top:0;
 width:100%;
 height:100%;
 background:linear-gradient(
-to bottom,
-#dff6ff,
+180deg,
+#d8f7ff,
 #ffffff
 );
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:100;
 }
 
 #gameTitle{
 font-size:42px;
 font-weight:bold;
-color:#2e8b57;
+color:#2d8f5a;
 text-align:center;
-margin-bottom:20px;
+margin-bottom:10px;
+}
+
+#subTitle{
+font-size:22px;
+color:#666;
+margin-bottom:25px;
 }
 
 #titleCanvas{
@@ -61,40 +60,25 @@ max-width:90%;
 
 #startBtn{
 margin-top:20px;
-padding:18px 45px;
+padding:18px 50px;
 font-size:28px;
 font-weight:bold;
 border:none;
-border-radius:18px;
-background:#32cd32;
+border-radius:20px;
+background:#37c96b;
 color:white;
-box-shadow:0 4px 10px rgba(0,0,0,.2);
+box-shadow:0 5px 15px rgba(0,0,0,.2);
 }
 
-#ui{
-position:absolute;
-top:10px;
-left:10px;
-z-index:50;
+#startBtn:active{
+transform:scale(.95);
+}
+
+#gameScreen{
 display:none;
-font-size:20px;
-font-weight:bold;
-color:#222;
+width:100%;
+height:100%;
 }
-
-#message{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:48px;
-font-weight:bold;
-color:white;
-text-shadow:0 0 10px black;
-display:none;
-z-index:60;
-}
-
 </style>
 </head>
 <body>
@@ -103,6 +87,10 @@ z-index:60;
 
 <div id="gameTitle">
 Chameleon's Tongue
+</div>
+
+<div id="subTitle">
+Bubble Puzzle
 </div>
 
 <canvas
@@ -117,272 +105,157 @@ START
 
 </div>
 
-<div id="ui">
-Tongue :
-<span id="moves">30</span>
-&nbsp;&nbsp;
-Stage :
-<span id="stage">1</span>
-</div>
-
-<div id="message"></div>
-
-<canvas id="gameCanvas"></canvas>
+<div id="gameScreen"></div>
 
 <script>
 
 const canvas =
-document.getElementById("gameCanvas");
+document.getElementById("titleCanvas");
 
 const ctx =
 canvas.getContext("2d");
 
-function resize(){
+function drawChameleon(){
 
-canvas.width =
-window.innerWidth;
-
-canvas.height =
-window.innerHeight;
-
-}
-
-resize();
-
-window.addEventListener(
-"resize",
-resize
-);
-
-const titleCanvas =
-document.getElementById("titleCanvas");
-
-const tctx =
-titleCanvas.getContext("2d");
-
-function drawTitleChameleon(){
-
-tctx.clearRect(
+ctx.clearRect(
 0,
 0,
-titleCanvas.width,
-titleCanvas.height
+canvas.width,
+canvas.height
 );
 
-tctx.save();
+ctx.save();
 
-tctx.translate(40,20);
+ctx.translate(40,20);
 
 /* body */
+ctx.fillStyle="#9be17f";
+ctx.strokeStyle="#58a84a";
+ctx.lineWidth=6;
 
-tctx.fillStyle="#9ad67a";
-tctx.strokeStyle="#4d9b4d";
-tctx.lineWidth=8;
+ctx.beginPath();
 
-tctx.beginPath();
+ctx.moveTo(50,140);
 
-tctx.moveTo(60,150);
-
-tctx.quadraticCurveTo(
-120,
-60,
-250,
-100
+ctx.quadraticCurveTo(
+120,40,
+250,80
 );
 
-tctx.quadraticCurveTo(
-290,
-130,
-220,
-180
+ctx.quadraticCurveTo(
+320,110,
+280,160
 );
 
-tctx.quadraticCurveTo(
-110,
-210,
-60,
-150
+ctx.quadraticCurveTo(
+180,190,
+80,170
 );
 
-tctx.fill();
-tctx.stroke();
+ctx.closePath();
+
+ctx.fill();
+ctx.stroke();
 
 /* tail */
+ctx.beginPath();
 
-tctx.beginPath();
-
-tctx.arc(
+ctx.arc(
 40,
-165,
+150,
 35,
 0,
 Math.PI*2
 );
 
-tctx.stroke();
+ctx.stroke();
 
-tctx.beginPath();
+ctx.beginPath();
 
-tctx.arc(
+ctx.arc(
 40,
-165,
-15,
+150,
+18,
 0,
 Math.PI*2
 );
 
-tctx.stroke();
-
-/* head */
-
-tctx.beginPath();
-
-tctx.moveTo(
-220,
-95
-);
-
-tctx.lineTo(
-310,
-80
-);
-
-tctx.lineTo(
-275,
-130
-);
-
-tctx.closePath();
-
-tctx.fill();
-tctx.stroke();
+ctx.stroke();
 
 /* eye */
+ctx.fillStyle="white";
 
-tctx.fillStyle="white";
-
-tctx.beginPath();
-
-tctx.arc(
-190,
-85,
-26,
+ctx.beginPath();
+ctx.arc(
+240,
+90,
+22,
 0,
 Math.PI*2
 );
+ctx.fill();
 
-tctx.fill();
+ctx.strokeStyle="#333";
+ctx.stroke();
 
-tctx.strokeStyle="#222";
-tctx.lineWidth=3;
-tctx.stroke();
+ctx.fillStyle="black";
 
-tctx.fillStyle="black";
-
-tctx.beginPath();
-
-tctx.arc(
-190,
-85,
+ctx.beginPath();
+ctx.arc(
+245,
+90,
 6,
 0,
 Math.PI*2
 );
-
-tctx.fill();
-
-/* legs */
-
-tctx.strokeStyle="#4d9b4d";
-tctx.lineWidth=8;
-
-for(let i=0;i<4;i++){
-
-let x=110+(i*35);
-
-tctx.beginPath();
-
-tctx.moveTo(
-x,
-170
-);
-
-tctx.lineTo(
-x,
-205
-);
-
-tctx.stroke();
-
-tctx.beginPath();
-
-tctx.moveTo(
-x,
-205
-);
-
-tctx.lineTo(
-x+18,
-205
-);
-
-tctx.stroke();
-
-}
+ctx.fill();
 
 /* tongue */
+ctx.strokeStyle="#ff4d4d";
+ctx.lineWidth=10;
 
-tctx.strokeStyle="red";
-tctx.lineWidth=10;
+ctx.beginPath();
+ctx.moveTo(290,120);
+ctx.lineTo(360,95);
+ctx.stroke();
 
-tctx.beginPath();
+/* legs */
+ctx.strokeStyle="#58a84a";
+ctx.lineWidth=8;
 
-tctx.moveTo(
-275,
-112
-);
+ctx.beginPath();
+ctx.moveTo(120,165);
+ctx.lineTo(110,205);
 
-tctx.lineTo(
-350,
-95
-);
+ctx.moveTo(170,165);
+ctx.lineTo(160,205);
 
-tctx.stroke();
+ctx.moveTo(220,165);
+ctx.lineTo(210,205);
 
-tctx.restore();
+ctx.moveTo(260,160);
+ctx.lineTo(250,200);
+
+ctx.stroke();
+
+ctx.restore();
 
 }
 
-drawTitleChameleon();
+drawChameleon();
 
-/* game vars */
+document
+.getElementById("startBtn")
+.addEventListener(
+"click",
+()=>{
+document.getElementById("titleScreen").style.display="none";
+document.getElementById("gameScreen").style.display="block";
+alert("PART1完成！");
+}
+);
 
-let stage=1;
-let moves=30;
+</script>
 
-let gameStarted=false;
-
-const colors=[
-"#ff5a5a",
-"#4aa3ff",
-"#44cc66",
-"#ffcc33",
-"#b266ff"
-];
-
-const rows=12;
-const cols=8;
-
-let grid=[];
-let bombs=[];
-
-const cellSize=52;
-
-const uiMoves=
-document.getElementById("moves");
-
-const uiStage=
-document.getElementById("stage");
-
-const message=
-document.getElementById("message");
+</body>
+</html>
