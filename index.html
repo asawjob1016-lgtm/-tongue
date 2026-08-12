@@ -485,13 +485,11 @@ gameCanvas.width,
 gameCanvas.height
 );
 
-for(const b of bubbles){
-
-drawBubble(b);
-
-}
-
 drawGameChameleon();
+
+for(const b of bubbles){
+    drawBubble(b);
+}
 
 requestAnimationFrame(loop);
 
