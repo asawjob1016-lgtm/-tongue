@@ -367,9 +367,8 @@ Math.random()*COLORS.length
 }
 function drawBubble(b){
 
-ctx.beginPath();
-
-ctx.fillStyle=b.color;
+gameCtx.beginPath();
+gameCtx.fillStyle=b.color;
 
 ctx.arc(
 b.x,
