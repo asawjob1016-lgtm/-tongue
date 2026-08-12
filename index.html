@@ -370,7 +370,7 @@ function drawBubble(b){
 gameCtx.beginPath();
 gameCtx.fillStyle=b.color;
 
-gamectx.arc(
+gameCtx.arc(
 b.x,
 b.y,
 20,
@@ -378,20 +378,20 @@ b.y,
 Math.PI*2
 );
 
-gamectx.fill();
+gameCtx.fill();
 
-gamectx.strokeStyle="white";
-gamectx.lineWidth=3;
-gamectx.stroke();
+gameCtx.strokeStyle="white";
+gameCtx.lineWidth=3;
+gameCtx.stroke();
 
 }
 function drawGameChameleon(){
 
-gamectx.fillStyle="#8fdc77";
+gameCtx.fillStyle="#8fdc77";
 
-gamectx.beginPath();
+gameCtx.beginPath();
 
-gamectx.ellipse(
+gameCtx.ellipse(
 70,
 canvas.height-70,
 50,
@@ -401,11 +401,11 @@ canvas.height-70,
 Math.PI*2
 );
 
-gamectx.fill();
+gameCtx.fill();
 
-gamectx.beginPath();
+gameCtx.beginPath();
 
-gamectx.arc(
+gameCtx.arc(
 110,
 canvas.height-90,
 18,
@@ -413,12 +413,12 @@ canvas.height-90,
 Math.PI*2
 );
 
-gamectx.fill();
+gameCtx.fill();
 
-gamectx.fillStyle="white";
+gameCtx.fillStyle="white";
 
-gamectx.beginPath();
-gamectx.arc(
+gameCtx.beginPath();
+gameCtx.arc(
 115,
 canvas.height-95,
 12,
@@ -437,7 +437,7 @@ canvas.height-95,
 0,
 Math.PI*2
 );
-gamectx.fill();
+gameCtx.fill();
 
 }
 function tapBubble(e){
