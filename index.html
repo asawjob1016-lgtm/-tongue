@@ -485,10 +485,56 @@ gameCanvas.width,
 gameCanvas.height
 );
 
-drawGameChameleon();
+function drawGameChameleon(){
 
-for(const b of bubbles){
-    drawBubble(b);
+const x = 80;
+const y = gameCanvas.height - 120;
+
+gameCtx.fillStyle="#8fdc77";
+
+gameCtx.beginPath();
+gameCtx.ellipse(
+x,
+y,
+50,
+35,
+0,
+0,
+Math.PI*2
+);
+gameCtx.fill();
+
+gameCtx.beginPath();
+gameCtx.arc(
+x+40,
+y-20,
+18,
+0,
+Math.PI*2
+);
+gameCtx.fill();
+
+gameCtx.fillStyle="white";
+gameCtx.beginPath();
+gameCtx.arc(
+x+45,
+y-25,
+12,
+0,
+Math.PI*2
+);
+gameCtx.fill();
+
+gameCtx.fillStyle="black";
+gameCtx.beginPath();
+gameCtx.arc(
+x+48,
+y-25,
+4,
+0,
+Math.PI*2
+);
+gameCtx.fill();
 }
 
 requestAnimationFrame(loop);
