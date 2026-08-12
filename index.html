@@ -387,11 +387,11 @@ ctx.stroke();
 }
 function drawGameChameleon(){
 
-ctx.fillStyle="#8fdc77";
+gamectx.fillStyle="#8fdc77";
 
-ctx.beginPath();
+gamectx.beginPath();
 
-ctx.ellipse(
+gamectx.ellipse(
 70,
 canvas.height-70,
 50,
@@ -401,11 +401,11 @@ canvas.height-70,
 Math.PI*2
 );
 
-ctx.fill();
+gamectx.fill();
 
-ctx.beginPath();
+gamectx.beginPath();
 
-ctx.arc(
+gamectx.arc(
 110,
 canvas.height-90,
 18,
@@ -413,31 +413,31 @@ canvas.height-90,
 Math.PI*2
 );
 
-ctx.fill();
+gamectx.fill();
 
-ctx.fillStyle="white";
+gamectx.fillStyle="white";
 
-ctx.beginPath();
-ctx.arc(
+gamectx.beginPath();
+gamectx.arc(
 115,
 canvas.height-95,
 12,
 0,
 Math.PI*2
 );
-ctx.fill();
+gamectx.fill();
 
-ctx.fillStyle="black";
+gamectx.fillStyle="black";
 
-ctx.beginPath();
-ctx.arc(
+gamectx.beginPath();
+gamectx.arc(
 118,
 canvas.height-95,
 4,
 0,
 Math.PI*2
 );
-ctx.fill();
+gamectx.fill();
 
 }
 function tapBubble(e){
