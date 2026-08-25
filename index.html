@@ -2,544 +2,2496 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no">
 
 <title>Chameleon's Tongue</title>
 
 <style>
+
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-html,body{
-width:100%;
-height:100%;
-overflow:hidden;
-font-family:sans-serif;
-background:#eaf9ff;
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:sans-serif;
+  background:#eaf9ff;
+  touch-action:none;
 }
+
+button{
+  border:none;
+  cursor:pointer;
+}
+
+/* =========================
+   TITLE
+========================= */
 
 #titleScreen{
-position:fixed;
-left:0;
-top:0;
-width:100%;
-height:100%;
-background:linear-gradient(
-180deg,
-#d8f7ff,
-#ffffff
-);
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
+  position:fixed;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d8f7ff,
+      #ffffff
+    );
+
+  z-index:1000;
 }
 
 #gameTitle{
-font-size:42px;
-font-weight:bold;
-color:#2d8f5a;
-text-align:center;
-margin-bottom:10px;
+  font-size:42px;
+  font-weight:bold;
+  color:#2d8f5a;
+  text-align:center;
+  margin-bottom:8px;
 }
 
 #subTitle{
-font-size:22px;
-color:#666;
-margin-bottom:25px;
+  font-size:22px;
+  color:#666;
+  margin-bottom:20px;
 }
 
 #titleCanvas{
-width:340px;
-height:240px;
-max-width:90%;
+  width:340px;
+  height:240px;
+  max-width:90%;
 }
 
-#startBtn{
-margin-top:20px;
-padding:18px 50px;
-font-size:28px;
-font-weight:bold;
-border:none;
-border-radius:20px;
-background:#37c96b;
-color:white;
-box-shadow:0 5px 15px rgba(0,0,0,.2);
+#startBtn,
+#restartBtn{
+  margin-top:20px;
+  padding:16px 48px;
+
+  font-size:26px;
+  font-weight:bold;
+
+  border-radius:20px;
+
+  background:#37c96b;
+  color:white;
+
+  box-shadow:
+    0 5px 15px rgba(0,0,0,.2);
 }
 
-#startBtn:active{
-transform:scale(.95);
+#startBtn:active,
+#restartBtn:active{
+  transform:scale(.95);
 }
+
+
+/* =========================
+   GAME
+========================= */
 
 #gameScreen{
-display:none;
-width:100%;
-height:100%;
+  display:none;
+
+  position:fixed;
+  inset:0;
 }
 
 #gameCanvas{
-width:100%;
-height:100%;
-display:block;
-background:#dff6ff;
+  display:block;
+
+  width:100%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #dff6ff,
+      #ffffff
+    );
 }
 
+
+/* =========================
+   UI
+========================= */
+
 #ui{
-position:absolute;
-top:10px;
-left:10px;
-z-index:100;
-font-size:22px;
-font-weight:bold;
-color:#333;
+  position:absolute;
+
+  top:10px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  z-index:100;
+
+  display:flex;
+  align-items:center;
+  gap:16px;
+
+  padding:9px 18px;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.92);
+
+  box-shadow:
+    0 3px 10px rgba(0,0,0,.12);
+
+  font-size:19px;
+  font-weight:bold;
+
+  color:#333;
+
+  white-space:nowrap;
 }
+
+#moves{
+  color:#e94d4d;
+}
+
+#timer{
+  color:#2d8f5a;
+}
+
+
+/* =========================
+   DANGER LINE
+========================= */
+
+#dangerLine{
+  position:absolute;
+
+  left:0;
+  right:0;
+
+  height:2px;
+
+  background:
+    rgba(255,70,70,.0);
+
+  pointer-events:none;
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+#resultScreen{
+  position:absolute;
+  inset:0;
+
+  display:none;
+
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    rgba(255,255,255,.91);
+
+  z-index:500;
+}
+
+#resultTitle{
+  font-size:48px;
+  font-weight:bold;
+
+  color:#2d8f5a;
+
+  margin-bottom:10px;
+}
+
+#resultText{
+  font-size:22px;
+  color:#555;
+
+  text-align:center;
+
+  margin-bottom:10px;
+}
+
 </style>
 </head>
+
 <body>
+
+
+<!-- ==================================================
+     TITLE
+================================================== -->
 
 <div id="titleScreen">
 
-<div id="gameTitle">
-Chameleon's Tongue
+  <div id="gameTitle">
+    Chameleon's Tongue
+  </div>
+
+  <div id="subTitle">
+    Bubble Puzzle
+  </div>
+
+  <canvas
+    id="titleCanvas"
+    width="400"
+    height="260">
+  </canvas>
+
+  <button id="startBtn">
+    START
+  </button>
+
 </div>
 
-<div id="subTitle">
-Bubble Puzzle
+
+<!-- ==================================================
+     GAME
+================================================== -->
+
+<div id="gameScreen">
+
+  <div id="ui">
+
+    <span>
+      Tongue :
+      <span id="moves">30</span>
+    </span>
+
+    <span>
+      Next :
+      <span id="timer">3.0</span>
+    </span>
+
+  </div>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="resultScreen">
+
+    <div id="resultTitle">
+      CLEAR!
+    </div>
+
+    <div id="resultText">
+      All bubbles cleared!
+    </div>
+
+    <button id="restartBtn">
+      PLAY AGAIN
+    </button>
+
+  </div>
+
 </div>
 
-<canvas
-id="titleCanvas"
-width="400"
-height="260">
-</canvas>
-
-<button id="startBtn">
-START
-</button>
-
-</div>
-
-<div id="gameScreen"></div>
 
 <script>
 
-const canvas =
-document.getElementById("titleCanvas");
+/* ==================================================
+   TITLE CHAMELEON
+================================================== */
 
-const ctx =
-canvas.getContext("2d");
+const titleCanvas =
+  document.getElementById("titleCanvas");
 
-function drawChameleon(){
+const titleCtx =
+  titleCanvas.getContext("2d");
 
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
 
-ctx.save();
+function drawTitleChameleon(){
 
-ctx.translate(40,20);
+  titleCtx.clearRect(
+    0,
+    0,
+    titleCanvas.width,
+    titleCanvas.height
+  );
 
-/* body */
-ctx.fillStyle="#9be17f";
-ctx.strokeStyle="#58a84a";
-ctx.lineWidth=6;
+  titleCtx.save();
 
-ctx.beginPath();
+  titleCtx.translate(40,20);
 
-ctx.moveTo(50,140);
 
-ctx.quadraticCurveTo(
-120,40,
-250,80
-);
+  /* body */
 
-ctx.quadraticCurveTo(
-320,110,
-280,160
-);
+  titleCtx.fillStyle="#9be17f";
+  titleCtx.strokeStyle="#58a84a";
+  titleCtx.lineWidth=6;
 
-ctx.quadraticCurveTo(
-180,190,
-80,170
-);
+  titleCtx.beginPath();
 
-ctx.closePath();
+  titleCtx.moveTo(50,140);
 
-ctx.fill();
-ctx.stroke();
+  titleCtx.quadraticCurveTo(
+    120,40,
+    250,80
+  );
 
-/* tail */
-ctx.beginPath();
+  titleCtx.quadraticCurveTo(
+    320,110,
+    280,160
+  );
 
-ctx.arc(
-40,
-150,
-35,
-0,
-Math.PI*2
-);
+  titleCtx.quadraticCurveTo(
+    180,190,
+    80,170
+  );
 
-ctx.stroke();
+  titleCtx.closePath();
 
-ctx.beginPath();
+  titleCtx.fill();
+  titleCtx.stroke();
 
-ctx.arc(
-40,
-150,
-18,
-0,
-Math.PI*2
-);
 
-ctx.stroke();
+  /* tail */
 
-/* eye */
-ctx.fillStyle="white";
+  titleCtx.beginPath();
 
-ctx.beginPath();
-ctx.arc(
-240,
-90,
-22,
-0,
-Math.PI*2
-);
-ctx.fill();
+  titleCtx.arc(
+    40,
+    150,
+    35,
+    0,
+    Math.PI*2
+  );
 
-ctx.strokeStyle="#333";
-ctx.stroke();
+  titleCtx.stroke();
 
-ctx.fillStyle="black";
 
-ctx.beginPath();
-ctx.arc(
-245,
-90,
-6,
-0,
-Math.PI*2
-);
-ctx.fill();
+  titleCtx.beginPath();
 
-/* tongue */
-ctx.strokeStyle="#ff4d4d";
-ctx.lineWidth=10;
+  titleCtx.arc(
+    40,
+    150,
+    18,
+    0,
+    Math.PI*2
+  );
 
-ctx.beginPath();
-ctx.moveTo(290,120);
-ctx.lineTo(360,95);
-ctx.stroke();
+  titleCtx.stroke();
 
-/* legs */
-ctx.strokeStyle="#58a84a";
-ctx.lineWidth=8;
 
-ctx.beginPath();
-ctx.moveTo(120,165);
-ctx.lineTo(110,205);
+  /* eye */
 
-ctx.moveTo(170,165);
-ctx.lineTo(160,205);
+  titleCtx.fillStyle="white";
 
-ctx.moveTo(220,165);
-ctx.lineTo(210,205);
+  titleCtx.beginPath();
 
-ctx.moveTo(260,160);
-ctx.lineTo(250,200);
+  titleCtx.arc(
+    240,
+    90,
+    22,
+    0,
+    Math.PI*2
+  );
 
-ctx.stroke();
+  titleCtx.fill();
 
-ctx.restore();
+  titleCtx.strokeStyle="#333";
+  titleCtx.stroke();
 
+
+  titleCtx.fillStyle="#222";
+
+  titleCtx.beginPath();
+
+  titleCtx.arc(
+    245,
+    90,
+    6,
+    0,
+    Math.PI*2
+  );
+
+  titleCtx.fill();
+
+
+  /* mouth */
+
+  titleCtx.strokeStyle="#397d3e";
+  titleCtx.lineWidth=5;
+
+  titleCtx.beginPath();
+
+  titleCtx.arc(
+    280,
+    120,
+    14,
+    0.1,
+    Math.PI-0.1
+  );
+
+  titleCtx.stroke();
+
+
+  /* tongue */
+
+  titleCtx.strokeStyle="#ff4d4d";
+  titleCtx.lineWidth=9;
+
+  titleCtx.beginPath();
+
+  titleCtx.moveTo(
+    288,
+    125
+  );
+
+  titleCtx.lineTo(
+    360,
+    98
+  );
+
+  titleCtx.stroke();
+
+
+  /* legs */
+
+  titleCtx.strokeStyle="#58a84a";
+  titleCtx.lineWidth=8;
+
+  titleCtx.beginPath();
+
+  titleCtx.moveTo(120,165);
+  titleCtx.lineTo(110,205);
+
+  titleCtx.moveTo(170,165);
+  titleCtx.lineTo(160,205);
+
+  titleCtx.moveTo(220,165);
+  titleCtx.lineTo(210,205);
+
+  titleCtx.moveTo(260,160);
+  titleCtx.lineTo(250,200);
+
+  titleCtx.stroke();
+
+  titleCtx.restore();
 }
 
-drawChameleon();
+drawTitleChameleon();
 
-document
-.getElementById("startBtn")
-.addEventListener(
-"click",
-()=>{
-document.getElementById("titleScreen").style.display="none";
-document.getElementById("gameScreen").style.display="block";
-startGame();
-});
-function startGame(){
 
-document.getElementById("gameScreen")
-.innerHTML=`
+/* ==================================================
+   GAME SETTINGS
+================================================== */
 
-<div id="ui">
-Tongue :
-<span id="moves">30</span>
-</div>
+const COLS = 7;
 
-<canvas id="gameCanvas"></canvas>
+/*
+  画面に表示できる最大段数。
+  実際のバブルは上から追加される。
+*/
+const ROWS = 10;
 
-`;
 
-initGame();
+/*
+  初期配置の段数
+*/
+const INITIAL_ROWS = 5;
 
-}
-let moves=30;
 
-const COLORS=[
-"#ff5a5a",
-"#4dabff",
-"#ffd43b",
-"#69db7c",
-"#c77dff"
+/*
+  3秒ごとに1列追加
+*/
+const DROP_INTERVAL = 3000;
+
+
+/*
+  最大舌回数
+*/
+const MAX_MOVES = 30;
+
+
+const COLORS = [
+  "#ff5a5a",
+  "#4dabff",
+  "#ffd43b",
+  "#69db7c",
+  "#c77dff"
 ];
+
 
 let gameCanvas;
 let gameCtx;
 
-let bubbles=[];
+let board = [];
 
-const SIZE=48;
+let cellSize = 50;
 
-function initGame(){
+let boardLeft = 0;
+let boardTop = 70;
 
-gameCanvas =
-document.getElementById("gameCanvas");
+let moves = MAX_MOVES;
 
-gameCtx =
-gameCanvas.getContext("2d");
+let gameState = "playing";
 
-resize();
+let dropTimer = DROP_INTERVAL;
 
-window.addEventListener(
-"resize",
-resize
-);
+let lastTime = 0;
 
-createBoard();
+let animationId = null;
 
-gameCanvas.addEventListener(
-"click",
-tapBubble
-);
 
-requestAnimationFrame(loop);
+/* ==================================================
+   TONGUE
+================================================== */
 
+let tongue = {
+
+  active:false,
+
+  progress:0,
+
+  startX:0,
+  startY:0,
+
+  targetX:0,
+  targetY:0,
+
+  group:null
+
+};
+
+
+/* ==================================================
+   START / RESTART
+================================================== */
+
+document
+  .getElementById("startBtn")
+  .addEventListener(
+    "click",
+    startGame
+  );
+
+
+document
+  .getElementById("restartBtn")
+  .addEventListener(
+    "click",
+    startGame
+  );
+
+
+function startGame(){
+
+  document
+    .getElementById("titleScreen")
+    .style.display="none";
+
+
+  document
+    .getElementById("gameScreen")
+    .style.display="block";
+
+
+  document
+    .getElementById("resultScreen")
+    .style.display="none";
+
+
+  gameCanvas =
+    document.getElementById("gameCanvas");
+
+  gameCtx =
+    gameCanvas.getContext("2d");
+
+
+  moves = MAX_MOVES;
+
+  gameState = "playing";
+
+  dropTimer = DROP_INTERVAL;
+
+  lastTime = performance.now();
+
+
+  document
+    .getElementById("moves")
+    .textContent = moves;
+
+
+  resizeGame();
+
+  createBoard();
+
+
+  tongue.active=false;
+  tongue.group=null;
+
+
+  gameCanvas.onpointerdown =
+    tapBubble;
+
+
+  if(animationId){
+
+    cancelAnimationFrame(
+      animationId
+    );
+
+  }
+
+
+  animationId =
+    requestAnimationFrame(loop);
 }
-function resize(){
 
-gameCanvas.width =
-window.innerWidth;
 
-gameCanvas.height =
-window.innerHeight;
+/* ==================================================
+   RESIZE
+================================================== */
 
+function resizeGame(){
+
+  gameCanvas.width =
+    window.innerWidth;
+
+  gameCanvas.height =
+    window.innerHeight;
+
+
+  /*
+    バブルが横幅に収まるようにする
+  */
+
+  cellSize =
+    Math.min(
+      54,
+      (gameCanvas.width-20)/COLS
+    );
+
+
+  boardLeft =
+    (
+      gameCanvas.width -
+      cellSize*COLS
+    )/2;
+
+
+  boardTop = 72;
 }
+
+
+/* ==================================================
+   CREATE INITIAL BOARD
+================================================== */
+
 function createBoard(){
 
-bubbles=[];
+  board = [];
 
-for(let row=0;row<5;row++){
+  for(let row=0;row<ROWS;row++){
 
-for(let col=0;col<7;col++){
+    board[row] = [];
 
-bubbles.push({
+    for(let col=0;col<COLS;col++){
 
-x:50+col*52,
-y:80 + row*52,
+      if(row < INITIAL_ROWS){
 
-color:
-COLORS[
-Math.floor(
-Math.random()*COLORS.length
-)
-]
+        board[row][col] =
+          createBubble(
+            row,
+            col,
+            true
+          );
 
-});
+      }else{
 
+        board[row][col] = null;
+
+      }
+
+    }
+
+  }
+
+  updatePositions();
+
+
+  /*
+    初期配置は画面上に固定
+  */
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+        board[row][col];
+
+      if(!b) continue;
+
+      b.y =
+        b.targetY;
+
+      b.falling=false;
+    }
+  }
 }
 
-}
 
-}
-function drawBubble(b){
+/* ==================================================
+   CREATE BUBBLE
+================================================== */
 
-gameCtx.beginPath();
-gameCtx.fillStyle=b.color;
-
-gameCtx.arc(
-b.x,
-b.y,
-20,
-0,
-Math.PI*2
-);
-
-gameCtx.fill();
-
-gameCtx.strokeStyle="white";
-gameCtx.lineWidth=3;
-gameCtx.stroke();
-
-}
-function drawGameChameleon(){
-
-gameCtx.fillStyle="#8fdc77";
-
-gameCtx.beginPath();
-
-gameCtx.ellipse(
-70,
-canvas.height-70,
-50,
-35,
-0,
-0,
-Math.PI*2
-);
-
-gameCtx.fill();
-
-gameCtx.beginPath();
-
-gameCtx.arc(
-110,
-canvas.height-90,
-18,
-0,
-Math.PI*2
-);
-
-gameCtx.fill();
-
-gameCtx.fillStyle="white";
-
-gameCtx.beginPath();
-gameCtx.arc(
-115,
-canvas.height-95,
-12,
-0,
-Math.PI*2
-);
-gamectx.fill();
-
-gamectx.fillStyle="black";
-
-gamectx.beginPath();
-gamectx.arc(
-118,
-canvas.height-95,
-4,
-0,
-Math.PI*2
-);
-gameCtx.fill();
-
-}
-function tapBubble(e){
-
-if(moves<=0)return;
-
-const rect=
-gameCanvas.getBoundingClientRect();
-
-const mx=
-e.clientX-rect.left;
-
-const my=
-e.clientY-rect.top;
-
-for(const b of bubbles){
-
-const dx=mx-b.x;
-const dy=my-b.y;
-
-if(
-Math.sqrt(dx*dx+dy*dy)
-<20
+function createBubble(
+  row,
+  col,
+  visible
 ){
 
-moves--;
+  return {
 
-document.getElementById(
-"moves"
-).textContent=moves;
+    row:row,
+    col:col,
 
-break;
+    color:
+      randomColor(),
 
+    x:0,
+
+    y:
+      visible
+      ? 0
+      : boardTop-cellSize,
+
+    targetY:0,
+
+    scale:1,
+
+    falling:false,
+
+    removing:false,
+
+    fallVelocity:0,
+
+    detached:false
+  };
 }
 
+
+/* ==================================================
+   RANDOM COLOR
+================================================== */
+
+function randomColor(){
+
+  return COLORS[
+    Math.floor(
+      Math.random()*COLORS.length
+    )
+  ];
 }
 
-}
-function loop(){
 
-gameCtx.clearRect(
-0,
-0,
-gameCanvas.width,
-gameCanvas.height
-);
+/* ==================================================
+   UPDATE POSITIONS
+================================================== */
 
-function drawGameChameleon(){
+function updatePositions(){
 
-const x = 80;
-const y = gameCanvas.height - 120;
+  for(let row=0;row<ROWS;row++){
 
-gameCtx.fillStyle="#8fdc77";
+    for(let col=0;col<COLS;col++){
 
-gameCtx.beginPath();
-gameCtx.ellipse(
-x,
-y,
-50,
-35,
-0,
-0,
-Math.PI*2
-);
-gameCtx.fill();
+      const b =
+        board[row][col];
 
-gameCtx.beginPath();
-gameCtx.arc(
-x+40,
-y-20,
-18,
-0,
-Math.PI*2
-);
-gameCtx.fill();
+      if(!b) continue;
 
-gameCtx.fillStyle="white";
-gameCtx.beginPath();
-gameCtx.arc(
-x+45,
-y-25,
-12,
-0,
-Math.PI*2
-);
-gameCtx.fill();
 
-gameCtx.fillStyle="black";
-gameCtx.beginPath();
-gameCtx.arc(
-x+48,
-y-25,
-4,
-0,
-Math.PI*2
-);
-gameCtx.fill();
+      b.x =
+        boardLeft +
+        col*cellSize +
+        cellSize/2;
+
+
+      b.targetY =
+        boardTop +
+        row*cellSize +
+        cellSize/2;
+
+
+      if(
+        !b.falling &&
+        !b.removing
+      ){
+
+        b.y =
+          b.targetY;
+      }
+    }
+  }
 }
 
-requestAnimationFrame(loop);
 
+/* ==================================================
+   DRAW BUBBLE
+================================================== */
+
+function drawBubble(b){
+
+  if(!b) return;
+
+  if(b.scale<=0) return;
+
+
+  gameCtx.save();
+
+
+  gameCtx.translate(
+    b.x,
+    b.y
+  );
+
+
+  gameCtx.scale(
+    b.scale,
+    b.scale
+  );
+
+
+  const radius =
+    cellSize * 0.41;
+
+
+  /* shadow */
+
+  gameCtx.beginPath();
+
+  gameCtx.fillStyle =
+    "rgba(0,0,0,.12)";
+
+  gameCtx.arc(
+    3,
+    4,
+    radius,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+
+  /* bubble */
+
+  gameCtx.beginPath();
+
+  gameCtx.fillStyle =
+    b.color;
+
+  gameCtx.arc(
+    0,
+    0,
+    radius,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+
+  /* border */
+
+  gameCtx.strokeStyle =
+    "rgba(255,255,255,.9)";
+
+  gameCtx.lineWidth=3;
+
+  gameCtx.stroke();
+
+
+  /* shine */
+
+  gameCtx.beginPath();
+
+  gameCtx.fillStyle =
+    "rgba(255,255,255,.65)";
+
+  gameCtx.arc(
+    -radius*.32,
+    -radius*.38,
+    radius*.18,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+
+  gameCtx.restore();
 }
+
+
+/* ==================================================
+   CHAMELEON
+================================================== */
+
+function getChameleonMouth(){
+
+  const x = 82;
+
+  const y =
+    gameCanvas.height-72;
+
+
+  return {
+
+    x:x+62,
+    y:y-14
+
+  };
+}
+
+
+function drawChameleon(){
+
+  const x=82;
+
+  const y =
+    gameCanvas.height-72;
+
+
+  /* tail */
+
+  gameCtx.strokeStyle =
+    "#58a84a";
+
+  gameCtx.lineWidth=7;
+
+  gameCtx.beginPath();
+
+  gameCtx.arc(
+    x-45,
+    y,
+    30,
+    0,
+    Math.PI*1.7
+  );
+
+  gameCtx.stroke();
+
+
+  /* body */
+
+  gameCtx.fillStyle =
+    "#8fdc77";
+
+  gameCtx.strokeStyle =
+    "#58a84a";
+
+  gameCtx.lineWidth=4;
+
+  gameCtx.beginPath();
+
+  gameCtx.ellipse(
+    x,
+    y,
+    60,
+    37,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+  gameCtx.stroke();
+
+
+  /* head */
+
+  gameCtx.beginPath();
+
+  gameCtx.arc(
+    x+48,
+    y-28,
+    24,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+  gameCtx.stroke();
+
+
+  /* eye */
+
+  gameCtx.fillStyle="white";
+
+  gameCtx.beginPath();
+
+  gameCtx.arc(
+    x+57,
+    y-36,
+    13,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+  gameCtx.strokeStyle="#333";
+
+  gameCtx.stroke();
+
+
+  gameCtx.fillStyle="#222";
+
+  gameCtx.beginPath();
+
+  gameCtx.arc(
+    x+60,
+    y-36,
+    4,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+
+  /* mouth */
+
+  gameCtx.strokeStyle =
+    "#397d3e";
+
+  gameCtx.lineWidth=4;
+
+  gameCtx.beginPath();
+
+  gameCtx.arc(
+    x+59,
+    y-14,
+    13,
+    0.1,
+    Math.PI-0.1
+  );
+
+  gameCtx.stroke();
+
+
+  /* legs */
+
+  gameCtx.strokeStyle =
+    "#58a84a";
+
+  gameCtx.lineWidth=6;
+
+  gameCtx.beginPath();
+
+  gameCtx.moveTo(
+    x-30,
+    y+25
+  );
+
+  gameCtx.lineTo(
+    x-42,
+    y+48
+  );
+
+  gameCtx.moveTo(
+    x+5,
+    y+27
+  );
+
+  gameCtx.lineTo(
+    x,
+    y+50
+  );
+
+  gameCtx.stroke();
+}
+
+
+/* ==================================================
+   TONGUE
+================================================== */
+
+function drawTongue(){
+
+  if(!tongue.active)
+    return;
+
+
+  let p =
+    tongue.progress;
+
+
+  /*
+    0〜0.5 = 伸びる
+    0.5〜1 = 戻る
+  */
+
+  let reach;
+
+  if(p<0.5){
+
+    reach =
+      p/0.5;
+
+  }else{
+
+    reach = 1;
+  }
+
+
+  const x =
+    tongue.startX +
+    (
+      tongue.targetX -
+      tongue.startX
+    ) * reach;
+
+
+  const y =
+    tongue.startY +
+    (
+      tongue.targetY -
+      tongue.startY
+    ) * reach;
+
+
+  gameCtx.save();
+
+
+  gameCtx.strokeStyle =
+    "#ff5555";
+
+  gameCtx.lineWidth=8;
+
+  gameCtx.lineCap="round";
+
+
+  gameCtx.beginPath();
+
+  gameCtx.moveTo(
+    tongue.startX,
+    tongue.startY
+  );
+
+  gameCtx.lineTo(
+    x,
+    y
+  );
+
+  gameCtx.stroke();
+
+
+  /* tongue tip */
+
+  gameCtx.fillStyle =
+    "#ff7777";
+
+  gameCtx.beginPath();
+
+  gameCtx.arc(
+    x,
+    y,
+    7,
+    0,
+    Math.PI*2
+  );
+
+  gameCtx.fill();
+
+
+  gameCtx.restore();
+}
+
+
+/* ==================================================
+   TAP
+================================================== */
+
+function tapBubble(e){
+
+  if(gameState!=="playing")
+    return;
+
+  if(tongue.active)
+    return;
+
+  if(moves<=0)
+    return;
+
+
+  const rect =
+    gameCanvas.getBoundingClientRect();
+
+
+  const mx =
+    e.clientX-rect.left;
+
+  const my =
+    e.clientY-rect.top;
+
+
+  const col =
+    Math.floor(
+      (mx-boardLeft)/
+      cellSize
+    );
+
+
+  const row =
+    Math.floor(
+      (my-boardTop)/
+      cellSize
+    );
+
+
+  if(
+    row<0 ||
+    row>=ROWS ||
+    col<0 ||
+    col>=COLS
+  ){
+
+    return;
+  }
+
+
+  const bubble =
+    board[row][col];
+
+
+  if(!bubble)
+    return;
+
+
+  /*
+    同色の連結グループ
+  */
+
+  const group =
+    findSameColorGroup(
+      row,
+      col
+    );
+
+
+  /*
+    3個未満なら消えない
+  */
+
+  if(group.length<3){
+
+    return;
+  }
+
+
+  moves--;
+
+  document
+    .getElementById("moves")
+    .textContent =
+    moves;
+
+
+  const mouth =
+    getChameleonMouth();
+
+
+  tongue.startX =
+    mouth.x;
+
+  tongue.startY =
+    mouth.y;
+
+
+  tongue.targetX =
+    bubble.x;
+
+  tongue.targetY =
+    bubble.y;
+
+
+  tongue.group =
+    group;
+
+  tongue.progress=0;
+
+  tongue.active=true;
+}
+
+
+/* ==================================================
+   FIND SAME COLOR GROUP
+================================================== */
+
+function findSameColorGroup(
+  startRow,
+  startCol
+){
+
+  const start =
+    board[startRow][startCol];
+
+
+  if(!start)
+    return [];
+
+
+  const color =
+    start.color;
+
+
+  const result=[];
+
+  const visited =
+    new Set();
+
+
+  const queue=[
+    [startRow,startCol]
+  ];
+
+
+  while(queue.length){
+
+    const [
+      row,
+      col
+    ] =
+      queue.shift();
+
+
+    const key =
+      row+","+col;
+
+
+    if(visited.has(key))
+      continue;
+
+
+    visited.add(key);
+
+
+    if(
+      row<0 ||
+      row>=ROWS ||
+      col<0 ||
+      col>=COLS
+    ){
+
+      continue;
+    }
+
+
+    const b =
+      board[row][col];
+
+
+    if(!b)
+      continue;
+
+
+    if(b.color!==color)
+      continue;
+
+
+    result.push({
+      row:row,
+      col:col
+    });
+
+
+    queue.push([
+      row-1,
+      col
+    ]);
+
+    queue.push([
+      row+1,
+      col
+    ]);
+
+    queue.push([
+      row,
+      col-1
+    ]);
+
+    queue.push([
+      row,
+      col+1
+    ]);
+  }
+
+
+  return result;
+}
+
+
+/* ==================================================
+   REMOVE GROUP
+================================================== */
+
+function removeGroup(group){
+
+  for(const pos of group){
+
+    const b =
+      board[pos.row][pos.col];
+
+
+    if(b){
+
+      b.removing=true;
+    }
+  }
+}
+
+
+/* ==================================================
+   FIND TOP CONNECTED BUBBLES
+================================================== */
+
+/*
+  ★ ここが今回の一番重要な処理です。
+
+  一番上の段にあるバブルを
+  「支柱」とします。
+
+  そこから上下左右に連結しているものは
+  落ちません。
+
+  どの支柱ともつながっていないものは
+  浮いているので落とします。
+*/
+
+function findTopConnected(){
+
+  const connected =
+    new Set();
+
+
+  const queue=[];
+
+
+  /*
+    一番上の段を全部スタート地点にする
+  */
+
+  for(let col=0;col<COLS;col++){
+
+    if(board[0][col]){
+
+      queue.push([
+        0,
+        col
+      ]);
+    }
+  }
+
+
+  while(queue.length){
+
+    const [
+      row,
+      col
+    ] =
+      queue.shift();
+
+
+    const key =
+      row+","+col;
+
+
+    if(connected.has(key))
+      continue;
+
+
+    connected.add(key);
+
+
+    if(
+      row<0 ||
+      row>=ROWS ||
+      col<0 ||
+      col>=COLS
+    ){
+
+      continue;
+    }
+
+
+    if(!board[row][col])
+      continue;
+
+
+    /*
+      上
+    */
+
+    if(row>0){
+
+      if(board[row-1][col]){
+
+        queue.push([
+          row-1,
+          col
+        ]);
+      }
+    }
+
+
+    /*
+      下
+    */
+
+    if(row<ROWS-1){
+
+      if(board[row+1][col]){
+
+        queue.push([
+          row+1,
+          col
+        ]);
+      }
+    }
+
+
+    /*
+      左
+    */
+
+    if(col>0){
+
+      if(board[row][col-1]){
+
+        queue.push([
+          row,
+          col-1
+        ]);
+      }
+    }
+
+
+    /*
+      右
+    */
+
+    if(col<COLS-1){
+
+      if(board[row][col+1]){
+
+        queue.push([
+          row,
+          col+1
+        ]);
+      }
+    }
+  }
+
+
+  return connected;
+}
+
+
+/* ==================================================
+   FIND FLOATING BUBBLES
+================================================== */
+
+function findFloating(){
+
+  const connected =
+    findTopConnected();
+
+
+  const floating=[];
+
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+        board[row][col];
+
+
+      if(!b)
+        continue;
+
+
+      const key =
+        row+","+col;
+
+
+      /*
+        上から連結していない
+      */
+
+      if(!connected.has(key)){
+
+        floating.push({
+          row:row,
+          col:col
+        });
+      }
+    }
+  }
+
+
+  return floating;
+}
+
+
+/* ==================================================
+   DETACH / DROP
+================================================== */
+
+function dropFloatingBubbles(){
+
+  const floating =
+    findFloating();
+
+
+  if(floating.length===0){
+
+    return false;
+  }
+
+
+  /*
+    浮いているバブルを
+    「落下中」にする。
+
+    ここではboardから即削除しない。
+    画面上で実際に落ちるアニメーションを行う。
+  */
+
+  for(const pos of floating){
+
+    const b =
+      board[pos.row][pos.col];
+
+
+    if(!b)
+      continue;
+
+
+    b.detached=true;
+
+    b.falling=true;
+
+    b.fallVelocity=0;
+
+    /*
+      grid上の場所から外して、
+      落下オブジェクトとして管理
+    */
+
+    fallingBubbles.push(b);
+
+    board[pos.row][pos.col]=null;
+  }
+
+
+  return true;
+}
+
+
+/* ==================================================
+   FALLING BUBBLES
+================================================== */
+
+let fallingBubbles=[];
+
+
+/* ==================================================
+   AFTER REMOVE
+================================================== */
+
+function processAfterRemoval(){
+
+  /*
+    まず消去対象を完全に削除
+  */
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+        board[row][col];
+
+
+      if(
+        b &&
+        b.removing
+      ){
+
+        board[row][col]=null;
+      }
+    }
+  }
+
+
+  /*
+    上との連結を失ったものを落とす
+  */
+
+  const dropped =
+    dropFloatingBubbles();
+
+
+  /*
+    何も落ちなければ
+    連鎖チェック
+  */
+
+  if(!dropped){
+
+    checkClearAndMoves();
+  }
+}
+
+
+/* ==================================================
+   CHECK NEW COMBOS
+================================================== */
+
+function checkChain(){
+
+  /*
+    残ったバブルを全部確認
+
+    3個以上つながっている
+    同色グループがあれば消す
+  */
+
+  const visited =
+    new Set();
+
+
+  const groups=[];
+
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+        board[row][col];
+
+
+      if(!b)
+        continue;
+
+
+      const key =
+        row+","+col;
+
+
+      if(visited.has(key))
+        continue;
+
+
+      const group =
+        findSameColorGroup(
+          row,
+          col
+        );
+
+
+      /*
+        groupをvisitedに登録
+      */
+
+      for(const p of group){
+
+        visited.add(
+          p.row+","+p.col
+        );
+      }
+
+
+      if(group.length>=3){
+
+        groups.push(group);
+      }
+    }
+  }
+
+
+  if(groups.length===0){
+
+    checkClearAndMoves();
+
+    return;
+  }
+
+
+  /*
+    連鎖で消える
+  */
+
+  for(const group of groups){
+
+    removeGroup(group);
+  }
+
+
+  setTimeout(
+    ()=>{
+      processAfterRemoval();
+    },
+    220
+  );
+}
+
+
+/* ==================================================
+   CLEAR / GAME OVER
+================================================== */
+
+function checkClearAndMoves(){
+
+  let count=0;
+
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      if(board[row][col]){
+
+        count++;
+      }
+    }
+  }
+
+
+  /*
+    全消し
+  */
+
+  if(count===0){
+
+    gameOver(
+      "CLEAR!",
+      "All bubbles cleared!"
+    );
+
+    return;
+  }
+
+
+  /*
+    舌がなくなった
+  */
+
+  if(
+    moves<=0 &&
+    !tongue.active &&
+    fallingBubbles.length===0
+  ){
+
+    gameOver(
+      "GAME OVER",
+      "No tongues left!"
+    );
+  }
+}
+
+
+/* ==================================================
+   ADD NEW ROW
+================================================== */
+
+function addNewRow(){
+
+  if(gameState!=="playing")
+    return;
+
+
+  /*
+    ★ 一番下まで埋まっている場合
+  */
+
+  for(let col=0;col<COLS;col++){
+
+    if(board[ROWS-1][col]){
+
+      gameOver(
+        "GAME OVER",
+        "The bubbles reached the bottom!"
+      );
+
+      return;
+    }
+  }
+
+
+  /*
+    上から1段ずつ下へ移動
+  */
+
+  for(
+    let row=ROWS-1;
+    row>0;
+    row--
+  ){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+        board[row-1][col];
+
+
+      board[row][col]=b;
+
+
+      if(b){
+
+        b.row=row;
+
+        b.col=col;
+
+        b.falling=true;
+      }
+    }
+  }
+
+
+  /*
+    新しい1列
+  */
+
+  for(let col=0;col<COLS;col++){
+
+    const b =
+      createBubble(
+        0,
+        col,
+        false
+      );
+
+
+    b.x =
+      boardLeft+
+      col*cellSize+
+      cellSize/2;
+
+
+    /*
+      画面上から降ってくる
+    */
+
+    b.y =
+      boardTop-
+      cellSize*1.2;
+
+
+    b.falling=true;
+
+
+    board[0][col]=b;
+  }
+
+
+  updatePositions();
+
+
+  /*
+    新しい列が画面内に
+    入ってくるまでアニメーション
+  */
+}
+
+
+/* ==================================================
+   UPDATE FALLING BUBBLES
+================================================== */
+
+function updateFallingBubbles(delta){
+
+  /*
+    浮いて落ちたバブル
+  */
+
+  for(
+    let i=fallingBubbles.length-1;
+    i>=0;
+    i--
+  ){
+
+    const b =
+      fallingBubbles[i];
+
+
+    b.fallVelocity +=
+      0.0012*delta;
+
+
+    b.y +=
+      b.fallVelocity*delta;
+
+
+    /*
+      画面外へ落ちた
+    */
+
+    if(
+      b.y >
+      gameCanvas.height+
+      cellSize
+    ){
+
+      fallingBubbles.splice(
+        i,
+        1
+      );
+    }
+  }
+}
+
+
+/* ==================================================
+   UPDATE BOARD FALL
+================================================== */
+
+function updateBoardFall(delta){
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+        board[row][col];
+
+
+      if(!b)
+        continue;
+
+
+      if(!b.falling){
+
+        b.y=
+          b.targetY;
+
+        continue;
+      }
+
+
+      /*
+        新しく追加された列や
+        上から落ちてきたバブル
+      */
+
+      const distance =
+        b.targetY-b.y;
+
+
+      if(Math.abs(distance)<1){
+
+        b.y=
+          b.targetY;
+
+        b.falling=false;
+
+      }else{
+
+        b.y +=
+          distance*
+          Math.min(
+            1,
+            delta/160
+          );
+      }
+    }
+  }
+}
+
+
+/* ==================================================
+   TONGUE FINISH
+================================================== */
+
+function finishTongue(){
+
+  if(!tongue.group)
+    return;
+
+
+  /*
+    指定グループを消す
+  */
+
+  removeGroup(
+    tongue.group
+  );
+
+
+  tongue.active=false;
+
+  tongue.group=null;
+
+
+  /*
+    消去アニメーション後
+  */
+
+  setTimeout(
+    ()=>{
+      if(gameState!=="playing")
+        return;
+
+      processAfterRemoval();
+    },
+    180
+  );
+}
+
+
+/* ==================================================
+   UPDATE
+================================================== */
+
+function update(delta){
+
+  if(gameState!=="playing")
+    return;
+
+
+  /*
+    舌
+  */
+
+  if(tongue.active){
+
+    tongue.progress +=
+      delta/650;
+
+
+    /*
+      ターゲット到着
+    */
+
+    if(
+      tongue.progress>=0.5 &&
+      tongue.progress<0.55
+    ){
+
+      finishTongue();
+    }
+  }
+
+
+  /*
+    通常バブルの落下
+  */
+
+  updateBoardFall(delta);
+
+
+  /*
+    浮いたバブルの落下
+  */
+
+  updateFallingBubbles(delta);
+
+
+  /*
+    3秒タイマー
+  */
+
+  dropTimer -= delta;
+
+
+  if(dropTimer<=0){
+
+    dropTimer =
+      DROP_INTERVAL;
+
+
+    addNewRow();
+  }
+
+
+  document
+    .getElementById("timer")
+    .textContent =
+    Math.max(
+      0,
+      dropTimer/1000
+    ).toFixed(1);
+
+
+  /*
+    上から追加された列が
+    完全に落ち着いたら
+    状態をチェック
+  */
+
+  if(
+    !tongue.active &&
+    fallingBubbles.length===0
+  ){
+
+    /*
+      下端まで埋まったか
+    */
+
+    let bottomFull=true;
+
+
+    for(let col=0;col<COLS;col++){
+
+      if(!board[ROWS-1][col]){
+
+        bottomFull=false;
+
+        break;
+      }
+    }
+
+
+    if(bottomFull){
+
+      gameOver(
+        "GAME OVER",
+        "The bubbles reached the bottom!"
+      );
+
+      return;
+    }
+
+
+    /*
+      全消し
+    */
+
+    checkClearAndMoves();
+  }
+}
+
+
+/* ==================================================
+   BACKGROUND
+================================================== */
+
+function drawBackground(){
+
+  /*
+    雲
+  */
+
+  drawCloud(
+    75,
+    55,
+    1
+  );
+
+
+  drawCloud(
+    gameCanvas.width-110,
+    125,
+    .75
+  );
+
+
+  /*
+    地面
+  */
+
+  gameCtx.fillStyle =
+    "#a7e88f";
+
+  gameCtx.fillRect(
+    0,
+    gameCanvas.height-40,
+    gameCanvas.width,
+    40
+  );
+}
+
+
+/* ==================================================
+   CLOUD
+================================================== */
+
+function drawCloud(
+  x,
+  y,
+  scale
+){
+
+  gameCtx.save();
+
+  gameCtx.translate(
+    x,
+    y
+  );
+
+  gameCtx.scale(
+    scale,
+    scale
+  );
+
+  gameCtx.fillStyle =
+    "rgba(255,255,255,.8)";
+
+
+  gameCtx.beginPath();
+
+  gameCtx.arc(
+    0,
+    10,
+    25,
+    0,
+    Math.PI*2
+  );
+
+
+  gameCtx.arc(
+    30,
+    0,
+    32,
+    0,
+    Math.PI*2
+  );
+
+
+  gameCtx.arc(
+    65,
+    12,
+    25,
+    0,
+    Math.PI*2
+  );
+
+
+  gameCtx.fill();
+
+  gameCtx.restore();
+}
+
+
+/* ==================================================
+   DRAW FALLING BUBBLES
+================================================== */
+
+function drawFallingBubbles(){
+
+  for(const b of fallingBubbles){
+
+    drawBubble(b);
+  }
+}
+
+
+/* ==================================================
+   GAME LOOP
+================================================== */
+
+function loop(time){
+
+  const delta =
+    Math.min(
+      50,
+      time-lastTime
+    );
+
+
+  lastTime=time;
+
+
+  gameCtx.clearRect(
+    0,
+    0,
+    gameCanvas.width,
+    gameCanvas.height
+  );
+
+
+  drawBackground();
+
+
+  /*
+    ボード
+  */
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      drawBubble(
+        board[row][col]
+      );
+    }
+  }
+
+
+  /*
+    落下中の浮遊バブル
+  */
+
+  drawFallingBubbles();
+
+
+  /*
+    カメレオン
+  */
+
+  drawChameleon();
+
+
+  /*
+    舌
+  */
+
+  drawTongue();
+
+
+  /*
+    更新
+  */
+
+  update(delta);
+
+
+  animationId =
+    requestAnimationFrame(loop);
+}
+
+
+/* ==================================================
+   RESIZE
+================================================== */
+
+window.addEventListener(
+  "resize",
+  ()=>{
+    if(!gameCanvas)
+      return;
+
+    resizeGame();
+
+    updatePositions();
+  }
+);
+
 </script>
 
 </body>
