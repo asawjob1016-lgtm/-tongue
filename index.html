@@ -2645,9 +2645,27 @@ function processAfterRemoval(){
     連鎖チェック
   */
 
-  if(!dropped){
+if(!dropped){
 
-    checkClearAndMoves();
+  /*
+    まずクリア判定
+  */
+
+  checkClearAndMoves();
+
+
+  /*
+    まだゲーム中で、
+    消せるグループがない場合は
+    自動救済
+  */
+
+  if(
+    gameState==="playing"
+  ){
+
+    ensurePlayableBoard();
+
   }
 }
 
