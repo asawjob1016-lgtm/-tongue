@@ -11,84 +11,6 @@ user-scalable=no">
 
 <title>Chameleon's Tongue</title>
 
-/* =========================
-   INTRO
-========================= */
-
-#introScreen{
-  position:fixed;
-  inset:0;
-
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-
-  background:
-    linear-gradient(
-      180deg,
-      #d8f7ff,
-      #ffffff
-    );
-
-  z-index:2000;
-
-  padding:20px;
-}
-
-#introCanvas{
-  width:340px;
-  height:240px;
-  max-width:90%;
-  margin-bottom:15px;
-}
-
-#introText{
-  min-height:90px;
-
-  font-size:26px;
-  font-weight:bold;
-
-  line-height:1.7;
-
-  color:#555;
-
-  text-align:center;
-
-  white-space:pre-line;
-}
-
-#introNextBtn{
-  margin-top:20px;
-
-  padding:13px 38px;
-
-  font-size:22px;
-  font-weight:bold;
-
-  border-radius:18px;
-
-  background:#37c96b;
-  color:white;
-
-  box-shadow:
-    0 5px 15px rgba(0,0,0,.15);
-}
-
-#introNextBtn:active{
-  transform:scale(.95);
-}
-
-#introSkip{
-  margin-top:12px;
-
-  background:transparent;
-
-  color:#999;
-
-  font-size:14px;
-}
-
 <style>
 
 *{
@@ -177,7 +99,6 @@ button{
   transform:scale(.95);
 }
 
-
 /* =========================
    GAME
 ========================= */
@@ -202,7 +123,6 @@ button{
       #ffffff
     );
 }
-
 
 /* =========================
    UI
@@ -248,7 +168,6 @@ button{
   color:#2d8f5a;
 }
 
-
 /* =========================
    DANGER LINE
 ========================= */
@@ -266,7 +185,6 @@ button{
 
   pointer-events:none;
 }
-
 
 /* =========================
    RESULT
@@ -311,7 +229,6 @@ button{
 
 <body>
 
-
 <!-- ==================================================
      TITLE
 ================================================== -->
@@ -337,7 +254,6 @@ button{
   </button>
 
 </div>
-
 
 <!-- ==================================================
      GAME
@@ -379,7 +295,6 @@ button{
 
 </div>
 
-
 <script>
 
 /* ==================================================
@@ -391,7 +306,6 @@ const titleCanvas =
 
 const titleCtx =
   titleCanvas.getContext("2d");
-
 
 function drawTitleChameleon(){
 
@@ -405,7 +319,6 @@ function drawTitleChameleon(){
   titleCtx.save();
 
   titleCtx.translate(40,20);
-
 
   /* body */
 
@@ -437,7 +350,6 @@ function drawTitleChameleon(){
   titleCtx.fill();
   titleCtx.stroke();
 
-
   /* tail */
 
   titleCtx.beginPath();
@@ -452,7 +364,6 @@ function drawTitleChameleon(){
 
   titleCtx.stroke();
 
-
   titleCtx.beginPath();
 
   titleCtx.arc(
@@ -464,7 +375,6 @@ function drawTitleChameleon(){
   );
 
   titleCtx.stroke();
-
 
   /* eye */
 
@@ -485,7 +395,6 @@ function drawTitleChameleon(){
   titleCtx.strokeStyle="#333";
   titleCtx.stroke();
 
-
   titleCtx.fillStyle="#222";
 
   titleCtx.beginPath();
@@ -499,7 +408,6 @@ function drawTitleChameleon(){
   );
 
   titleCtx.fill();
-
 
   /* mouth */
 
@@ -517,7 +425,6 @@ function drawTitleChameleon(){
   );
 
   titleCtx.stroke();
-
 
   /* tongue */
 
@@ -537,7 +444,6 @@ function drawTitleChameleon(){
   );
 
   titleCtx.stroke();
-
 
   /* legs */
 
@@ -565,7 +471,6 @@ function drawTitleChameleon(){
 
 drawTitleChameleon();
 
-
 /* ==================================================
    GAME SETTINGS
 ================================================== */
@@ -578,24 +483,20 @@ const COLS = 7;
 */
 let ROWS = 10;
 
-
 /*
   初期配置の段数
 */
 const INITIAL_ROWS = 5;
-
 
 /*
   3秒ごとに1列追加
 */
 const DROP_INTERVAL = 3000;
 
-
 /*
   最大舌回数
 */
 const MAX_MOVES = 30;
-
 
 const COLORS = [
   "#ff5a5a",
@@ -604,7 +505,6 @@ const COLORS = [
   "#69db7c",
   "#c77dff"
 ];
-
 
 let gameCanvas;
 let gameCtx;
@@ -626,7 +526,6 @@ let lastTime = 0;
 
 let animationId = null;
 
-
 /* ==================================================
    TONGUE
 ================================================== */
@@ -647,7 +546,6 @@ let tongue = {
 
 };
 
-
 /* ==================================================
    START / RESTART
 ================================================== */
@@ -659,7 +557,6 @@ document
     startGame
   );
 
-
 document
   .getElementById("restartBtn")
   .addEventListener(
@@ -667,30 +564,25 @@ document
     startGame
   );
 
-
 function startGame(){
 
   document
     .getElementById("titleScreen")
     .style.display="none";
 
-
   document
     .getElementById("gameScreen")
     .style.display="block";
 
-
   document
     .getElementById("resultScreen")
     .style.display="none";
-
 
   gameCanvas =
     document.getElementById("gameCanvas");
 
   gameCtx =
     gameCanvas.getContext("2d");
-
 
   moves = MAX_MOVES;
 
@@ -700,24 +592,19 @@ function startGame(){
 
   lastTime = performance.now();
 
-
   document
     .getElementById("moves")
     .textContent = moves;
-
 
   resizeGame();
 
   createBoard();
 
-
   tongue.active=false;
   tongue.group=null;
 
-
   gameCanvas.onpointerdown =
     tapBubble;
-
 
   if(animationId){
 
@@ -727,11 +614,9 @@ function startGame(){
 
   }
 
-
   animationId =
     requestAnimationFrame(loop);
 }
-
 
 /* ==================================================
    RESIZE
@@ -745,7 +630,6 @@ function resizeGame(){
   gameCanvas.height =
     window.innerHeight;
 
-
   /*
     バブルが横幅に収まるようにする
   */
@@ -756,17 +640,14 @@ function resizeGame(){
       (gameCanvas.width-20)/COLS
     );
 
-
   boardLeft =
     (
       gameCanvas.width -
       cellSize*COLS
     )/2;
 
-
   boardTop = 72;
 }
-
 
 /* ==================================================
    CREATE INITIAL BOARD
@@ -803,7 +684,6 @@ function createBoard(){
 
   updatePositions();
 
-
   /*
     初期配置は画面上に固定
   */
@@ -824,7 +704,6 @@ function createBoard(){
     }
   }
 }
-
 
 /* ==================================================
    CREATE BUBBLE
@@ -865,7 +744,6 @@ function createBubble(
   };
 }
 
-
 /* ==================================================
    RANDOM COLOR
 ================================================== */
@@ -878,7 +756,6 @@ function randomColor(){
     )
   ];
 }
-
 
 /* ==================================================
    UPDATE POSITIONS
@@ -895,18 +772,15 @@ function updatePositions(){
 
       if(!b) continue;
 
-
       b.x =
         boardLeft +
         col*cellSize +
         cellSize/2;
 
-
       b.targetY =
         boardTop +
         row*cellSize +
         cellSize/2;
-
 
       if(
         !b.falling &&
@@ -920,7 +794,6 @@ function updatePositions(){
   }
 }
 
-
 /* ==================================================
    DRAW BUBBLE
 ================================================== */
@@ -931,25 +804,20 @@ function drawBubble(b){
 
   if(b.scale<=0) return;
 
-
   gameCtx.save();
-
 
   gameCtx.translate(
     b.x,
     b.y
   );
 
-
   gameCtx.scale(
     b.scale,
     b.scale
   );
 
-
   const radius =
     cellSize * 0.41;
-
 
   /* shadow */
 
@@ -968,7 +836,6 @@ function drawBubble(b){
 
   gameCtx.fill();
 
-
   /* bubble */
 
   gameCtx.beginPath();
@@ -986,7 +853,6 @@ function drawBubble(b){
 
   gameCtx.fill();
 
-
   /* border */
 
   gameCtx.strokeStyle =
@@ -995,7 +861,6 @@ function drawBubble(b){
   gameCtx.lineWidth=3;
 
   gameCtx.stroke();
-
 
   /* shine */
 
@@ -1014,10 +879,8 @@ function drawBubble(b){
 
   gameCtx.fill();
 
-
   gameCtx.restore();
 }
-
 
 /* ==================================================
    CHAMELEON
@@ -1030,7 +893,6 @@ function getChameleonMouth(){
   const y =
     gameCanvas.height-72;
 
-
   return {
 
     x:x+62,
@@ -1039,14 +901,12 @@ function getChameleonMouth(){
   };
 }
 
-
 function drawChameleon(){
 
   const x=82;
 
   const y =
     gameCanvas.height-72;
-
 
   /* tail */
 
@@ -1066,7 +926,6 @@ function drawChameleon(){
   );
 
   gameCtx.stroke();
-
 
   /* body */
 
@@ -1094,7 +953,6 @@ function drawChameleon(){
 
   gameCtx.stroke();
 
-
   /* head */
 
   gameCtx.beginPath();
@@ -1110,7 +968,6 @@ function drawChameleon(){
   gameCtx.fill();
 
   gameCtx.stroke();
-
 
   /* eye */
 
@@ -1132,7 +989,6 @@ function drawChameleon(){
 
   gameCtx.stroke();
 
-
   gameCtx.fillStyle="#222";
 
   gameCtx.beginPath();
@@ -1146,7 +1002,6 @@ function drawChameleon(){
   );
 
   gameCtx.fill();
-
 
   /* mouth */
 
@@ -1166,7 +1021,6 @@ function drawChameleon(){
   );
 
   gameCtx.stroke();
-
 
   /* legs */
 
@@ -1200,7 +1054,6 @@ function drawChameleon(){
   gameCtx.stroke();
 }
 
-
 /* ==================================================
    TONGUE
 ================================================== */
@@ -1210,10 +1063,8 @@ function drawTongue(){
   if(!tongue.active)
     return;
 
-
   let p =
     tongue.progress;
-
 
   /*
     0〜0.5 = 伸びる
@@ -1232,14 +1083,12 @@ function drawTongue(){
     reach = 1;
   }
 
-
   const x =
     tongue.startX +
     (
       tongue.targetX -
       tongue.startX
     ) * reach;
-
 
   const y =
     tongue.startY +
@@ -1248,9 +1097,7 @@ function drawTongue(){
       tongue.startY
     ) * reach;
 
-
   gameCtx.save();
-
 
   gameCtx.strokeStyle =
     "#ff5555";
@@ -1258,7 +1105,6 @@ function drawTongue(){
   gameCtx.lineWidth=8;
 
   gameCtx.lineCap="round";
-
 
   gameCtx.beginPath();
 
@@ -1273,7 +1119,6 @@ function drawTongue(){
   );
 
   gameCtx.stroke();
-
 
   /* tongue tip */
 
@@ -1292,10 +1137,8 @@ function drawTongue(){
 
   gameCtx.fill();
 
-
   gameCtx.restore();
 }
-
 
 /* ==================================================
    TAP
@@ -1312,10 +1155,8 @@ function tapBubble(e){
   if(moves<=0)
     return;
 
-
   const rect =
     gameCanvas.getBoundingClientRect();
-
 
   const mx =
     e.clientX-rect.left;
@@ -1323,20 +1164,17 @@ function tapBubble(e){
   const my =
     e.clientY-rect.top;
 
-
   const col =
     Math.floor(
       (mx-boardLeft)/
       cellSize
     );
 
-
   const row =
     Math.floor(
       (my-boardTop)/
       cellSize
     );
-
 
   if(
     row<0 ||
@@ -1348,14 +1186,11 @@ function tapBubble(e){
     return;
   }
 
-
   const bubble =
     board[row][col];
 
-
   if(!bubble)
     return;
-
 
   /*
     同色の連結グループ
@@ -1367,7 +1202,6 @@ function tapBubble(e){
       col
     );
 
-
   /*
     3個未満なら消えない
   */
@@ -1377,7 +1211,6 @@ function tapBubble(e){
     return;
   }
 
-
   moves--;
 
   document
@@ -1385,10 +1218,8 @@ function tapBubble(e){
     .textContent =
     moves;
 
-
   const mouth =
     getChameleonMouth();
-
 
   tongue.startX =
     mouth.x;
@@ -1396,13 +1227,11 @@ function tapBubble(e){
   tongue.startY =
     mouth.y;
 
-
   tongue.targetX =
     bubble.x;
 
   tongue.targetY =
     bubble.y;
-
 
   tongue.group =
     group;
@@ -1411,7 +1240,6 @@ function tapBubble(e){
 
   tongue.active=true;
 }
-
 
 /* ==================================================
    FIND SAME COLOR GROUP
@@ -1425,25 +1253,20 @@ function findSameColorGroup(
   const start =
     board[startRow][startCol];
 
-
   if(!start)
     return [];
 
-
   const color =
     start.color;
-
 
   const result=[];
 
   const visited =
     new Set();
 
-
   const queue=[
     [startRow,startCol]
   ];
-
 
   while(queue.length){
 
@@ -1453,17 +1276,13 @@ function findSameColorGroup(
     ] =
       queue.shift();
 
-
     const key =
       row+","+col;
-
 
     if(visited.has(key))
       continue;
 
-
     visited.add(key);
-
 
     if(
       row<0 ||
@@ -1475,24 +1294,19 @@ function findSameColorGroup(
       continue;
     }
 
-
     const b =
       board[row][col];
-
 
     if(!b)
       continue;
 
-
     if(b.color!==color)
       continue;
-
 
     result.push({
       row:row,
       col:col
     });
-
 
     queue.push([
       row-1,
@@ -1515,10 +1329,8 @@ function findSameColorGroup(
     ]);
   }
 
-
   return result;
 }
-
 
 /* ==================================================
    REMOVE GROUP
@@ -1531,14 +1343,12 @@ function removeGroup(group){
     const b =
       board[pos.row][pos.col];
 
-
     if(b){
 
       b.removing=true;
     }
   }
 }
-
 
 /* ==================================================
    FIND TOP CONNECTED BUBBLES
@@ -1562,9 +1372,7 @@ function findTopConnected(){
   const connected =
     new Set();
 
-
   const queue=[];
-
 
   /*
     一番上の段を全部スタート地点にする
@@ -1581,7 +1389,6 @@ function findTopConnected(){
     }
   }
 
-
   while(queue.length){
 
     const [
@@ -1590,17 +1397,13 @@ function findTopConnected(){
     ] =
       queue.shift();
 
-
     const key =
       row+","+col;
-
 
     if(connected.has(key))
       continue;
 
-
     connected.add(key);
-
 
     if(
       row<0 ||
@@ -1612,10 +1415,8 @@ function findTopConnected(){
       continue;
     }
 
-
     if(!board[row][col])
       continue;
-
 
     /*
       上
@@ -1632,7 +1433,6 @@ function findTopConnected(){
       }
     }
 
-
     /*
       下
     */
@@ -1648,7 +1448,6 @@ function findTopConnected(){
       }
     }
 
-
     /*
       左
     */
@@ -1663,7 +1462,6 @@ function findTopConnected(){
         ]);
       }
     }
-
 
     /*
       右
@@ -1681,10 +1479,8 @@ function findTopConnected(){
     }
   }
 
-
   return connected;
 }
-
 
 /* ==================================================
    FIND FLOATING BUBBLES
@@ -1695,9 +1491,7 @@ function findFloating(){
   const connected =
     findTopConnected();
 
-
   const floating=[];
-
 
   for(let row=0;row<ROWS;row++){
 
@@ -1706,14 +1500,11 @@ function findFloating(){
       const b =
         board[row][col];
 
-
       if(!b)
         continue;
 
-
       const key =
         row+","+col;
-
 
       /*
         上から連結していない
@@ -1729,10 +1520,8 @@ function findFloating(){
     }
   }
 
-
   return floating;
 }
-
 
 /* ==================================================
    DETACH / DROP
@@ -1743,12 +1532,10 @@ function dropFloatingBubbles(){
   const floating =
     findFloating();
 
-
   if(floating.length===0){
 
     return false;
   }
-
 
   /*
     浮いているバブルを
@@ -1763,10 +1550,8 @@ function dropFloatingBubbles(){
     const b =
       board[pos.row][pos.col];
 
-
     if(!b)
       continue;
-
 
     b.detached=true;
 
@@ -1784,17 +1569,14 @@ function dropFloatingBubbles(){
     board[pos.row][pos.col]=null;
   }
 
-
   return true;
 }
-
 
 /* ==================================================
    FALLING BUBBLES
 ================================================== */
 
 let fallingBubbles=[];
-
 
 /* ==================================================
    AFTER REMOVE
@@ -1813,7 +1595,6 @@ function processAfterRemoval(){
       const b =
         board[row][col];
 
-
       if(
         b &&
         b.removing
@@ -1824,14 +1605,12 @@ function processAfterRemoval(){
     }
   }
 
-
   /*
     上との連結を失ったものを落とす
   */
 
   const dropped =
     dropFloatingBubbles();
-
 
   /*
     何も落ちなければ
@@ -1843,7 +1622,6 @@ function processAfterRemoval(){
     checkClearAndMoves();
   }
 }
-
 
 /* ==================================================
    CHECK NEW COMBOS
@@ -1861,9 +1639,7 @@ function checkChain(){
   const visited =
     new Set();
 
-
   const groups=[];
-
 
   for(let row=0;row<ROWS;row++){
 
@@ -1872,25 +1648,20 @@ function checkChain(){
       const b =
         board[row][col];
 
-
       if(!b)
         continue;
-
 
       const key =
         row+","+col;
 
-
       if(visited.has(key))
         continue;
-
 
       const group =
         findSameColorGroup(
           row,
           col
         );
-
 
       /*
         groupをvisitedに登録
@@ -1903,7 +1674,6 @@ function checkChain(){
         );
       }
 
-
       if(group.length>=3){
 
         groups.push(group);
@@ -1911,14 +1681,12 @@ function checkChain(){
     }
   }
 
-
   if(groups.length===0){
 
     checkClearAndMoves();
 
     return;
   }
-
 
   /*
     連鎖で消える
@@ -1929,7 +1697,6 @@ function checkChain(){
     removeGroup(group);
   }
 
-
   setTimeout(
     ()=>{
       processAfterRemoval();
@@ -1938,7 +1705,6 @@ function checkChain(){
   );
 }
 
-
 /* ==================================================
    CLEAR / GAME OVER
 ================================================== */
@@ -1946,7 +1712,6 @@ function checkChain(){
 function checkClearAndMoves(){
 
   let count=0;
-
 
   for(let row=0;row<ROWS;row++){
 
@@ -1958,7 +1723,6 @@ function checkClearAndMoves(){
       }
     }
   }
-
 
   /*
     全消し
@@ -1973,7 +1737,6 @@ function checkClearAndMoves(){
 
     return;
   }
-
 
   /*
     舌がなくなった
@@ -1992,7 +1755,6 @@ function checkClearAndMoves(){
   }
 }
 
-
 /* ==================================================
    ADD NEW ROW
 ================================================== */
@@ -2001,7 +1763,6 @@ function addNewRow(){
 
   if(gameState!=="playing")
     return;
-
 
   /*
     ★ 一番下まで埋まっている場合
@@ -2020,7 +1781,6 @@ function addNewRow(){
     }
   }
 
-
   /*
     上から1段ずつ下へ移動
   */
@@ -2036,9 +1796,7 @@ function addNewRow(){
       const b =
         board[row-1][col];
 
-
       board[row][col]=b;
-
 
       if(b){
 
@@ -2050,7 +1808,6 @@ function addNewRow(){
       }
     }
   }
-
 
   /*
     新しい1列
@@ -2065,12 +1822,10 @@ function addNewRow(){
         false
       );
 
-
     b.x =
       boardLeft+
       col*cellSize+
       cellSize/2;
-
 
     /*
       画面上から降ってくる
@@ -2080,23 +1835,18 @@ function addNewRow(){
       boardTop-
       cellSize*1.2;
 
-
     b.falling=true;
-
 
     board[0][col]=b;
   }
 
-
   updatePositions();
-
 
   /*
     新しい列が画面内に
     入ってくるまでアニメーション
   */
 }
-
 
 /* ==================================================
    UPDATE FALLING BUBBLES
@@ -2117,14 +1867,11 @@ function updateFallingBubbles(delta){
     const b =
       fallingBubbles[i];
 
-
     b.fallVelocity +=
       0.0012*delta;
 
-
     b.y +=
       b.fallVelocity*delta;
-
 
     /*
       画面外へ落ちた
@@ -2144,7 +1891,6 @@ function updateFallingBubbles(delta){
   }
 }
 
-
 /* ==================================================
    UPDATE BOARD FALL
 ================================================== */
@@ -2158,10 +1904,8 @@ function updateBoardFall(delta){
       const b =
         board[row][col];
 
-
       if(!b)
         continue;
-
 
       if(!b.falling){
 
@@ -2171,7 +1915,6 @@ function updateBoardFall(delta){
         continue;
       }
 
-
       /*
         新しく追加された列や
         上から落ちてきたバブル
@@ -2179,7 +1922,6 @@ function updateBoardFall(delta){
 
       const distance =
         b.targetY-b.y;
-
 
       if(Math.abs(distance)<1){
 
@@ -2201,7 +1943,6 @@ function updateBoardFall(delta){
   }
 }
 
-
 /* ==================================================
    TONGUE FINISH
 ================================================== */
@@ -2211,7 +1952,6 @@ function finishTongue(){
   if(!tongue.group)
     return;
 
-
   /*
     指定グループを消す
   */
@@ -2220,11 +1960,9 @@ function finishTongue(){
     tongue.group
   );
 
-
   tongue.active=false;
 
   tongue.group=null;
-
 
   /*
     消去アニメーション後
@@ -2241,7 +1979,6 @@ function finishTongue(){
   );
 }
 
-
 /* ==================================================
    UPDATE
 ================================================== */
@@ -2251,7 +1988,6 @@ function update(delta){
   if(gameState!=="playing")
     return;
 
-
   /*
     舌
   */
@@ -2260,7 +1996,6 @@ function update(delta){
 
     tongue.progress +=
       delta/650;
-
 
     /*
       ターゲット到着
@@ -2275,13 +2010,11 @@ function update(delta){
     }
   }
 
-
   /*
     通常バブルの落下
   */
 
   updateBoardFall(delta);
-
 
   /*
     浮いたバブルの落下
@@ -2289,23 +2022,19 @@ function update(delta){
 
   updateFallingBubbles(delta);
 
-
   /*
     3秒タイマー
   */
 
   dropTimer -= delta;
 
-
   if(dropTimer<=0){
 
     dropTimer =
       DROP_INTERVAL;
 
-
     addNewRow();
   }
-
 
   document
     .getElementById("timer")
@@ -2314,7 +2043,6 @@ function update(delta){
       0,
       dropTimer/1000
     ).toFixed(1);
-
 
   /*
     上から追加された列が
@@ -2333,7 +2061,6 @@ function update(delta){
 
     let bottomFull=true;
 
-
     for(let col=0;col<COLS;col++){
 
       if(!board[ROWS-1][col]){
@@ -2343,7 +2070,6 @@ function update(delta){
         break;
       }
     }
-
 
     if(bottomFull){
 
@@ -2355,7 +2081,6 @@ function update(delta){
       return;
     }
 
-
     /*
       全消し
     */
@@ -2363,7 +2088,6 @@ function update(delta){
     checkClearAndMoves();
   }
 }
-
 
 /* ==================================================
    BACKGROUND
@@ -2381,13 +2105,11 @@ function drawBackground(){
     1
   );
 
-
   drawCloud(
     gameCanvas.width-110,
     125,
     .75
   );
-
 
   /*
     地面
@@ -2403,7 +2125,6 @@ function drawBackground(){
     40
   );
 }
-
 
 /* ==================================================
    CLOUD
@@ -2430,7 +2151,6 @@ function drawCloud(
   gameCtx.fillStyle =
     "rgba(255,255,255,.8)";
 
-
   gameCtx.beginPath();
 
   gameCtx.arc(
@@ -2441,7 +2161,6 @@ function drawCloud(
     Math.PI*2
   );
 
-
   gameCtx.arc(
     30,
     0,
@@ -2449,7 +2168,6 @@ function drawCloud(
     0,
     Math.PI*2
   );
-
 
   gameCtx.arc(
     65,
@@ -2459,12 +2177,10 @@ function drawCloud(
     Math.PI*2
   );
 
-
   gameCtx.fill();
 
   gameCtx.restore();
 }
-
 
 /* ==================================================
    DRAW FALLING BUBBLES
@@ -2478,7 +2194,6 @@ function drawFallingBubbles(){
   }
 }
 
-
 /* ==================================================
    GAME LOOP
 ================================================== */
@@ -2491,9 +2206,7 @@ function loop(time){
       time-lastTime
     );
 
-
   lastTime=time;
-
 
   gameCtx.clearRect(
     0,
@@ -2502,9 +2215,7 @@ function loop(time){
     gameCanvas.height
   );
 
-
   drawBackground();
-
 
   /*
     ボード
@@ -2520,13 +2231,11 @@ function loop(time){
     }
   }
 
-
   /*
     落下中の浮遊バブル
   */
 
   drawFallingBubbles();
-
 
   /*
     カメレオン
@@ -2534,13 +2243,11 @@ function loop(time){
 
   drawChameleon();
 
-
   /*
     舌
   */
 
   drawTongue();
-
 
   /*
     更新
@@ -2548,11 +2255,9 @@ function loop(time){
 
   update(delta);
 
-
   animationId =
     requestAnimationFrame(loop);
 }
-
 
 /* ==================================================
    RESIZE
