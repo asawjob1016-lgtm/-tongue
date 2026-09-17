@@ -11,6 +11,84 @@ user-scalable=no">
 
 <title>Chameleon's Tongue</title>
 
+/* =========================
+   INTRO
+========================= */
+
+#introScreen{
+  position:fixed;
+  inset:0;
+
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d8f7ff,
+      #ffffff
+    );
+
+  z-index:2000;
+
+  padding:20px;
+}
+
+#introCanvas{
+  width:340px;
+  height:240px;
+  max-width:90%;
+  margin-bottom:15px;
+}
+
+#introText{
+  min-height:90px;
+
+  font-size:26px;
+  font-weight:bold;
+
+  line-height:1.7;
+
+  color:#555;
+
+  text-align:center;
+
+  white-space:pre-line;
+}
+
+#introNextBtn{
+  margin-top:20px;
+
+  padding:13px 38px;
+
+  font-size:22px;
+  font-weight:bold;
+
+  border-radius:18px;
+
+  background:#37c96b;
+  color:white;
+
+  box-shadow:
+    0 5px 15px rgba(0,0,0,.15);
+}
+
+#introNextBtn:active{
+  transform:scale(.95);
+}
+
+#introSkip{
+  margin-top:12px;
+
+  background:transparent;
+
+  color:#999;
+
+  font-size:14px;
+}
+
 <style>
 
 *{
