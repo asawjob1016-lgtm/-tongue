@@ -594,6 +594,619 @@ function drawTitleChameleon(){
 drawTitleChameleon();
 
 /* ==================================================
+   INTRO
+================================================== */
+
+const introCanvas =
+  document.getElementById("introCanvas");
+
+const introCtx =
+  introCanvas.getContext("2d");
+
+const introText =
+  document.getElementById("introText");
+
+const introNextBtn =
+  document.getElementById("introNextBtn");
+
+const introSkip =
+  document.getElementById("introSkip");
+
+
+let introIndex = 0;
+
+
+const introScenes = [
+
+  "ある いいてんきの ひ。",
+
+  "おなかすいた。",
+
+  "あっ！ たべもの？",
+
+  "これは……とどくかな？",
+
+  "びよーーーん！",
+
+  "あれ？ とれない。",
+
+  "3こ つながってる！",
+
+  "これなら とれそう！"
+
+];
+
+
+/* ==================================================
+   SHOW INTRO
+================================================== */
+
+function showIntro(){
+
+  document
+    .getElementById("titleScreen")
+    .style.display="none";
+
+  document
+    .getElementById("gameScreen")
+    .style.display="none";
+
+  document
+    .getElementById("introScreen")
+    .style.display="flex";
+
+  introIndex=0;
+
+  showIntroScene();
+}
+
+
+/* ==================================================
+   SHOW INTRO SCENE
+================================================== */
+
+function showIntroScene(){
+
+  introText.textContent =
+    introScenes[introIndex];
+
+  drawIntro();
+
+  if(
+    introIndex ===
+    introScenes.length-1
+  ){
+
+    introNextBtn.textContent =
+      "LET'S EAT!";
+
+  }else{
+
+    introNextBtn.textContent =
+      "NEXT";
+  }
+}
+
+
+/* ==================================================
+   NEXT
+================================================== */
+
+introNextBtn.addEventListener(
+  "click",
+  ()=>{
+
+    introIndex++;
+
+    if(
+      introIndex >=
+      introScenes.length
+    ){
+
+      document
+        .getElementById("introScreen")
+        .style.display="none";
+
+      startGame();
+
+      return;
+    }
+
+    showIntroScene();
+
+  }
+);
+
+
+/* ==================================================
+   SKIP
+================================================== */
+
+introSkip.addEventListener(
+  "click",
+  ()=>{
+
+    document
+      .getElementById("introScreen")
+      .style.display="none";
+
+    startGame();
+
+  }
+);
+
+
+/* ==================================================
+   DRAW INTRO
+================================================== */
+
+function drawIntro(){
+
+  introCtx.clearRect(
+    0,
+    0,
+    introCanvas.width,
+    introCanvas.height
+  );
+
+
+  /*
+    空
+  */
+
+  const gradient =
+    introCtx.createLinearGradient(
+      0,
+      0,
+      0,
+      introCanvas.height
+    );
+
+  gradient.addColorStop(
+    0,
+    "#d8f7ff"
+  );
+
+  gradient.addColorStop(
+    1,
+    "#ffffff"
+  );
+
+  introCtx.fillStyle =
+    gradient;
+
+  introCtx.fillRect(
+    0,
+    0,
+    introCanvas.width,
+    introCanvas.height
+  );
+
+
+  /*
+    雲
+  */
+
+  drawIntroCloud(
+    70,
+    65,
+    1
+  );
+
+  drawIntroCloud(
+    320,
+    120,
+    .7
+  );
+
+
+  /*
+    地面
+  */
+
+  introCtx.fillStyle =
+    "#a7e88f";
+
+  introCtx.fillRect(
+    0,
+    330,
+    400,
+    70
+  );
+
+
+  /*
+    カメレオン
+  */
+
+  drawIntroChameleon();
+
+
+  /*
+    シーンによって
+    バブルを表示
+  */
+
+  if(introIndex>=2){
+
+    drawIntroBubbles();
+
+  }
+
+}
+
+
+/* ==================================================
+   INTRO CHAMELEON
+================================================== */
+
+function drawIntroChameleon(){
+
+  const x=105;
+  const y=275;
+
+
+  /*
+    tail
+  */
+
+  introCtx.strokeStyle =
+    "#58a84a";
+
+  introCtx.lineWidth=7;
+
+  introCtx.beginPath();
+
+  introCtx.arc(
+    x-55,
+    y,
+    30,
+    0,
+    Math.PI*1.7
+  );
+
+  introCtx.stroke();
+
+
+  /*
+    body
+  */
+
+  introCtx.fillStyle =
+    "#8fdc77";
+
+  introCtx.strokeStyle =
+    "#58a84a";
+
+  introCtx.lineWidth=5;
+
+  introCtx.beginPath();
+
+  introCtx.ellipse(
+    x,
+    y,
+    65,
+    40,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.fill();
+
+  introCtx.stroke();
+
+
+  /*
+    head
+  */
+
+  introCtx.beginPath();
+
+  introCtx.arc(
+    x+55,
+    y-30,
+    27,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.fill();
+
+  introCtx.stroke();
+
+
+  /*
+    eye
+  */
+
+  introCtx.fillStyle =
+    "white";
+
+  introCtx.beginPath();
+
+  introCtx.arc(
+    x+65,
+    y-39,
+    15,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.fill();
+
+  introCtx.strokeStyle =
+    "#333";
+
+  introCtx.stroke();
+
+
+  introCtx.fillStyle =
+    "#222";
+
+  introCtx.beginPath();
+
+  introCtx.arc(
+    x+68,
+    y-39,
+    5,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.fill();
+
+
+  /*
+    mouth
+  */
+
+  introCtx.strokeStyle =
+    "#397d3e";
+
+  introCtx.lineWidth=4;
+
+  introCtx.beginPath();
+
+  introCtx.arc(
+    x+68,
+    y-15,
+    14,
+    0.1,
+    Math.PI-0.1
+  );
+
+  introCtx.stroke();
+
+
+  /*
+    legs
+  */
+
+  introCtx.strokeStyle =
+    "#58a84a";
+
+  introCtx.lineWidth=6;
+
+  introCtx.beginPath();
+
+  introCtx.moveTo(
+    x-30,
+    y+27
+  );
+
+  introCtx.lineTo(
+    x-40,
+    y+55
+  );
+
+  introCtx.moveTo(
+    x+15,
+    y+28
+  );
+
+  introCtx.lineTo(
+    x+10,
+    y+55
+  );
+
+  introCtx.stroke();
+
+
+  /*
+    tongue
+  */
+
+  if(introIndex>=4){
+
+    introCtx.strokeStyle =
+      "#ff5555";
+
+    introCtx.lineWidth=8;
+
+    introCtx.lineCap="round";
+
+    introCtx.beginPath();
+
+    introCtx.moveTo(
+      x+68,
+      y-15
+    );
+
+    introCtx.lineTo(
+      330,
+      190
+    );
+
+    introCtx.stroke();
+
+  }
+
+}
+
+
+/* ==================================================
+   INTRO BUBBLES
+================================================== */
+
+function drawIntroBubbles(){
+
+  drawIntroBubble(
+    300,
+    145,
+    "#ff5a5a"
+  );
+
+  drawIntroBubble(
+    340,
+    145,
+    "#4dabff"
+  );
+
+  drawIntroBubble(
+    320,
+    185,
+    "#ffd43b"
+  );
+
+
+  /*
+    3個つながった状態
+  */
+
+  if(introIndex>=6){
+
+    drawIntroBubble(
+      285,
+      185,
+      "#ffd43b"
+    );
+
+    drawIntroBubble(
+      355,
+      185,
+      "#ffd43b"
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   INTRO BUBBLE
+================================================== */
+
+function drawIntroBubble(
+  x,
+  y,
+  color
+){
+
+  introCtx.beginPath();
+
+  introCtx.fillStyle =
+    color;
+
+  introCtx.arc(
+    x,
+    y,
+    22,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.fill();
+
+
+  introCtx.strokeStyle =
+    "white";
+
+  introCtx.lineWidth=3;
+
+  introCtx.stroke();
+
+
+  /*
+    shine
+  */
+
+  introCtx.beginPath();
+
+  introCtx.fillStyle =
+    "rgba(255,255,255,.65)";
+
+  introCtx.arc(
+    x-7,
+    y-8,
+    5,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.fill();
+
+}
+
+
+/* ==================================================
+   INTRO CLOUD
+================================================== */
+
+function drawIntroCloud(
+  x,
+  y,
+  scale
+){
+
+  introCtx.save();
+
+  introCtx.translate(
+    x,
+    y
+  );
+
+  introCtx.scale(
+    scale,
+    scale
+  );
+
+  introCtx.fillStyle =
+    "rgba(255,255,255,.8)";
+
+  introCtx.beginPath();
+
+  introCtx.arc(
+    0,
+    10,
+    25,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.arc(
+    30,
+    0,
+    32,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.arc(
+    65,
+    12,
+    25,
+    0,
+    Math.PI*2
+  );
+
+  introCtx.fill();
+
+  introCtx.restore();
+
+}
+
+/* ==================================================
    GAME SETTINGS
 ================================================== */
 
