@@ -98,6 +98,103 @@ button{
 #restartBtn:active{
   transform:scale(.95);
 }
+#introScreen{
+
+  position:fixed;
+
+  inset:0;
+
+  display:none;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  background:
+
+    linear-gradient(
+
+      180deg,
+
+      #d8f7ff,
+
+      #ffffff
+
+    );
+
+  z-index:1500;
+
+}
+
+#introCanvas{
+
+  width:360px;
+
+  height:360px;
+
+  max-width:90%;
+
+}
+
+#introText{
+
+  min-height:60px;
+
+  margin-top:5px;
+
+  font-size:24px;
+
+  font-weight:bold;
+
+  color:#555;
+
+  text-align:center;
+
+}
+
+#introNextBtn{
+
+  margin-top:15px;
+
+  padding:12px 35px;
+
+  font-size:20px;
+
+  font-weight:bold;
+
+  border-radius:18px;
+
+  background:#37c96b;
+
+  color:white;
+
+  box-shadow:
+
+    0 4px 12px rgba(0,0,0,.15);
+
+}
+
+#introNextBtn:active{
+
+  transform:scale(.95);
+
+}
+
+#introSkip{
+
+  margin-top:10px;
+
+  padding:8px 20px;
+
+  font-size:15px;
+
+  background:transparent;
+
+  color:#888;
+
+}
 
 /* =========================
    GAME
