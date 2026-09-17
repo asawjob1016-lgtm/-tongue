@@ -2084,6 +2084,300 @@ function removeGroup(group){
   }
 }
 
+==============================================
+
+   CHECK PLAYABLE
+
+================================================== */
+
+/*
+
+  現在の盤面に
+
+  「3個以上つながっているグループ」が
+
+  1つでもあるか確認する。
+
+*/
+
+function hasPlayableGroup(){
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+
+        board[row][col];
+
+      if(!b)
+
+        continue;
+
+      const group =
+
+        findSameColorGroup(
+
+          row,
+
+          col
+
+        );
+
+      if(group.length>=3){
+
+        return true;
+
+      }
+
+    }
+
+  }
+
+  return false;
+
+}
+
+/* ==================================================
+   RESCUE DEADLOCK
+================================================== */
+
+/*
+
+  3個以上消せる場所が
+
+  どこにもない場合の救済。
+
+  バブルを並べ直して、
+
+  必ず3個のグループを作る。
+
+*/
+
+function ensurePlayableBoard(){
+
+  if(gameState!=="playing")
+
+    return;
+
+  /*
+
+    すでに消せる場所があるなら
+
+    何もしない
+
+  */
+
+  if(hasPlayableGroup())
+
+    return;
+
+  /*
+
+    現在あるバブルを全部集める
+
+  */
+
+  const bubbles=[];
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      const b =
+
+        board[row][col];
+
+      if(!b)
+
+        continue;
+
+      bubbles.push(b);
+
+      board[row][col]=null;
+
+    }
+
+  }
+
+  /*
+
+    バブルが3個未満なら
+
+    ここでは何もしない
+
+  */
+
+  if(bubbles.length<3){
+
+    /*
+
+      3個未満なら
+
+      残りをクリア扱いにする
+
+    */
+
+    if(bubbles.length>0){
+
+      gameOver(
+
+        "CLEAR!",
+
+        "Almost there!"
+
+      );
+
+    }
+
+    return;
+
+  }
+
+  /*
+
+    バブルをシャッフル
+
+  */
+
+  for(
+
+    let i=bubbles.length-1;
+
+    i>0;
+
+    i--
+
+  ){
+
+    const j =
+
+      Math.floor(
+
+        Math.random()*(i+1)
+
+      );
+
+    const temp =
+
+      bubbles[i];
+
+    bubbles[i]=
+
+      bubbles[j];
+
+    bubbles[j]=
+
+      temp;
+
+  }
+
+  /*
+
+    盤面を上から詰め直す
+
+    こうすることで
+
+    必ず3個を横につなげられる。
+
+  */
+
+  let index=0;
+
+  for(let row=0;row<ROWS;row++){
+
+    for(let col=0;col<COLS;col++){
+
+      if(index>=bubbles.length)
+
+        break;
+
+      const b =
+
+        bubbles[index];
+
+      /*
+
+        最初の3個を
+
+        同じ色にする
+
+      */
+
+      if(index<3){
+
+        b.color =
+
+          COLORS[0];
+
+      }
+
+      b.row=row;
+
+      b.col=col;
+
+      b.falling=false;
+
+      b.removing=false;
+
+      b.detached=false;
+
+      board[row][col]=b;
+
+      index++;
+
+    }
+
+    if(index>=bubbles.length)
+
+      break;
+
+  }
+
+  updatePositions();
+
+  /*
+
+    ちょっとだけ
+
+    「シャッフルされた」感じを出す
+
+  */
+
+  setTimeout(
+
+    ()=>{
+
+      if(gameState!=="playing")
+
+        return;
+
+      /*
+
+        念のため確認
+
+      */
+
+      if(!hasPlayableGroup()){
+
+        ensurePlayableBoard();
+
+      }
+
+    },
+
+    50
+
+  );
+
+}
+
+/* ==================================================
+   REMOVE GROUP
+================================================== */
+
+function removeGroup(group){
+  
 /* ==================================================
    FIND TOP CONNECTED BUBBLES
 ================================================== */
