@@ -1,25 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
 <meta charset="UTF-8">
 
-<meta
-  name="viewport"
-  content="width=device-width,
-  initial-scale=1,
-  maximum-scale=1,
-  user-scalable=no"
->
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no">
 
 <title>Chameleon's Tongue</title>
 
 <style>
-
-/* ==================================================
-   BASIC
-================================================== */
 
 *{
   margin:0;
@@ -29,25 +21,18 @@
 
 html,
 body{
-
   width:100%;
   height:100%;
-
   overflow:hidden;
-
   font-family:sans-serif;
-
   background:#eaf9ff;
-
   touch-action:none;
 }
 
 button{
-
   border:none;
-
   cursor:pointer;
-
+  -webkit-tap-highlight-color:transparent;
 }
 
 /* ==================================================
@@ -57,15 +42,11 @@ button{
 #titleScreen{
 
   position:fixed;
-
   inset:0;
 
   display:flex;
-
   flex-direction:column;
-
   justify-content:center;
-
   align-items:center;
 
   background:
@@ -76,13 +57,11 @@ button{
     );
 
   z-index:1000;
-
 }
 
 #gameTitle{
 
   font-size:42px;
-
   font-weight:bold;
 
   color:#2d8f5a;
@@ -90,7 +69,6 @@ button{
   text-align:center;
 
   margin-bottom:8px;
-
 }
 
 #subTitle{
@@ -100,17 +78,14 @@ button{
   color:#666;
 
   margin-bottom:20px;
-
 }
 
 #titleCanvas{
 
   width:340px;
-
   height:240px;
 
   max-width:90%;
-
 }
 
 #startBtn,
@@ -121,26 +96,23 @@ button{
   padding:16px 48px;
 
   font-size:26px;
-
   font-weight:bold;
 
   border-radius:20px;
 
   background:#37c96b;
-
   color:white;
 
   box-shadow:
     0 5px 15px rgba(0,0,0,.2);
-
 }
 
 #startBtn:active,
 #restartBtn:active{
 
   transform:scale(.95);
-
 }
+
 
 /* ==================================================
    INTRO
@@ -149,15 +121,12 @@ button{
 #introScreen{
 
   position:fixed;
-
   inset:0;
 
   display:none;
 
   flex-direction:column;
-
   justify-content:center;
-
   align-items:center;
 
   background:
@@ -168,17 +137,14 @@ button{
     );
 
   z-index:1500;
-
 }
 
 #introCanvas{
 
   width:360px;
-
   height:360px;
 
   max-width:90%;
-
 }
 
 #introText{
@@ -188,13 +154,11 @@ button{
   margin-top:5px;
 
   font-size:24px;
-
   font-weight:bold;
 
   color:#555;
 
   text-align:center;
-
 }
 
 #introNextBtn{
@@ -204,24 +168,20 @@ button{
   padding:12px 35px;
 
   font-size:20px;
-
   font-weight:bold;
 
   border-radius:18px;
 
   background:#37c96b;
-
   color:white;
 
   box-shadow:
     0 4px 12px rgba(0,0,0,.15);
-
 }
 
 #introNextBtn:active{
 
   transform:scale(.95);
-
 }
 
 #introSkip{
@@ -235,8 +195,8 @@ button{
   background:transparent;
 
   color:#888;
-
 }
+
 
 /* ==================================================
    GAME
@@ -247,9 +207,7 @@ button{
   display:none;
 
   position:fixed;
-
   inset:0;
-
 }
 
 #gameCanvas{
@@ -257,7 +215,6 @@ button{
   display:block;
 
   width:100%;
-
   height:100%;
 
   background:
@@ -266,8 +223,8 @@ button{
       #dff6ff,
       #ffffff
     );
-
 }
+
 
 /* ==================================================
    UI
@@ -278,7 +235,6 @@ button{
   position:absolute;
 
   top:10px;
-
   left:50%;
 
   transform:translateX(-50%);
@@ -286,7 +242,6 @@ button{
   z-index:100;
 
   display:flex;
-
   align-items:center;
 
   gap:16px;
@@ -302,26 +257,21 @@ button{
     0 3px 10px rgba(0,0,0,.12);
 
   font-size:19px;
-
   font-weight:bold;
 
   color:#333;
 
   white-space:nowrap;
-
 }
 
 #moves{
-
   color:#e94d4d;
-
 }
 
 #timer{
-
   color:#2d8f5a;
-
 }
+
 
 /* ==================================================
    RESULT
@@ -330,34 +280,28 @@ button{
 #resultScreen{
 
   position:absolute;
-
   inset:0;
 
   display:none;
 
   flex-direction:column;
-
   justify-content:center;
-
   align-items:center;
 
   background:
     rgba(255,255,255,.91);
 
   z-index:500;
-
 }
 
 #resultTitle{
 
   font-size:48px;
-
   font-weight:bold;
 
   color:#2d8f5a;
 
   margin-bottom:10px;
-
 }
 
 #resultText{
@@ -369,12 +313,11 @@ button{
   text-align:center;
 
   margin-bottom:10px;
-
 }
 
 </style>
-
 </head>
+
 
 <body>
 
@@ -498,12 +441,11 @@ function drawTitleChameleon(){
 
   titleCtx.translate(40,20);
 
+
   /* body */
 
   titleCtx.fillStyle="#9be17f";
-
   titleCtx.strokeStyle="#58a84a";
-
   titleCtx.lineWidth=6;
 
   titleCtx.beginPath();
@@ -528,7 +470,6 @@ function drawTitleChameleon(){
   titleCtx.closePath();
 
   titleCtx.fill();
-
   titleCtx.stroke();
 
 
@@ -597,7 +538,6 @@ function drawTitleChameleon(){
   /* mouth */
 
   titleCtx.strokeStyle="#397d3e";
-
   titleCtx.lineWidth=5;
 
   titleCtx.beginPath();
@@ -616,7 +556,6 @@ function drawTitleChameleon(){
   /* tongue */
 
   titleCtx.strokeStyle="#ff4d4d";
-
   titleCtx.lineWidth=9;
 
   titleCtx.beginPath();
@@ -637,32 +576,27 @@ function drawTitleChameleon(){
   /* legs */
 
   titleCtx.strokeStyle="#58a84a";
-
   titleCtx.lineWidth=8;
 
   titleCtx.beginPath();
 
   titleCtx.moveTo(120,165);
-
   titleCtx.lineTo(110,205);
 
   titleCtx.moveTo(170,165);
-
   titleCtx.lineTo(160,205);
 
   titleCtx.moveTo(220,165);
-
   titleCtx.lineTo(210,205);
 
   titleCtx.moveTo(260,160);
-
   titleCtx.lineTo(250,200);
 
   titleCtx.stroke();
 
   titleCtx.restore();
-
 }
+
 
 drawTitleChameleon();
 
@@ -732,7 +666,6 @@ function showIntro(){
   introIndex=0;
 
   showIntroScene();
-
 }
 
 
@@ -742,7 +675,7 @@ function showIntro(){
 
 function showIntroScene(){
 
-  introText.textContent=
+  introText.textContent =
     introScenes[introIndex];
 
   drawIntro();
@@ -752,16 +685,14 @@ function showIntroScene(){
     introScenes.length-1
   ){
 
-    introNextBtn.textContent=
+    introNextBtn.textContent =
       "LET'S EAT!";
 
   }else{
 
-    introNextBtn.textContent=
+    introNextBtn.textContent =
       "NEXT";
-
   }
-
 }
 
 
@@ -787,11 +718,9 @@ introNextBtn.addEventListener(
       startGame();
 
       return;
-
     }
 
     showIntroScene();
-
   }
 );
 
@@ -809,7 +738,6 @@ introSkip.addEventListener(
       .style.display="none";
 
     startGame();
-
   }
 );
 
@@ -828,7 +756,9 @@ function drawIntro(){
   );
 
 
-  const gradient=
+  /* sky */
+
+  const gradient =
     introCtx.createLinearGradient(
       0,
       0,
@@ -846,8 +776,7 @@ function drawIntro(){
     "#ffffff"
   );
 
-  introCtx.fillStyle=
-    gradient;
+  introCtx.fillStyle=gradient;
 
   introCtx.fillRect(
     0,
@@ -856,6 +785,8 @@ function drawIntro(){
     introCanvas.height
   );
 
+
+  /* clouds */
 
   drawIntroCloud(
     70,
@@ -870,8 +801,9 @@ function drawIntro(){
   );
 
 
-  introCtx.fillStyle=
-    "#a7e88f";
+  /* ground */
+
+  introCtx.fillStyle="#a7e88f";
 
   introCtx.fillRect(
     0,
@@ -881,15 +813,17 @@ function drawIntro(){
   );
 
 
+  /* chameleon */
+
   drawIntroChameleon();
 
+
+  /* bubbles */
 
   if(introIndex>=2){
 
     drawIntroBubbles();
-
   }
-
 }
 
 
@@ -900,15 +834,12 @@ function drawIntro(){
 function drawIntroChameleon(){
 
   const x=105;
-
   const y=275;
 
 
   /* tail */
 
-  introCtx.strokeStyle=
-    "#58a84a";
-
+  introCtx.strokeStyle="#58a84a";
   introCtx.lineWidth=7;
 
   introCtx.beginPath();
@@ -926,12 +857,8 @@ function drawIntroChameleon(){
 
   /* body */
 
-  introCtx.fillStyle=
-    "#8fdc77";
-
-  introCtx.strokeStyle=
-    "#58a84a";
-
+  introCtx.fillStyle="#8fdc77";
+  introCtx.strokeStyle="#58a84a";
   introCtx.lineWidth=5;
 
   introCtx.beginPath();
@@ -947,7 +874,6 @@ function drawIntroChameleon(){
   );
 
   introCtx.fill();
-
   introCtx.stroke();
 
 
@@ -964,14 +890,12 @@ function drawIntroChameleon(){
   );
 
   introCtx.fill();
-
   introCtx.stroke();
 
 
   /* eye */
 
-  introCtx.fillStyle=
-    "white";
+  introCtx.fillStyle="white";
 
   introCtx.beginPath();
 
@@ -985,13 +909,11 @@ function drawIntroChameleon(){
 
   introCtx.fill();
 
-  introCtx.strokeStyle=
-    "#333";
+  introCtx.strokeStyle="#333";
 
   introCtx.stroke();
 
-  introCtx.fillStyle=
-    "#222";
+  introCtx.fillStyle="#222";
 
   introCtx.beginPath();
 
@@ -1008,9 +930,7 @@ function drawIntroChameleon(){
 
   /* mouth */
 
-  introCtx.strokeStyle=
-    "#397d3e";
-
+  introCtx.strokeStyle="#397d3e";
   introCtx.lineWidth=4;
 
   introCtx.beginPath();
@@ -1028,9 +948,7 @@ function drawIntroChameleon(){
 
   /* legs */
 
-  introCtx.strokeStyle=
-    "#58a84a";
-
+  introCtx.strokeStyle="#58a84a";
   introCtx.lineWidth=6;
 
   introCtx.beginPath();
@@ -1062,11 +980,8 @@ function drawIntroChameleon(){
 
   if(introIndex>=4){
 
-    introCtx.strokeStyle=
-      "#ff5555";
-
+    introCtx.strokeStyle="#ff5555";
     introCtx.lineWidth=8;
-
     introCtx.lineCap="round";
 
     introCtx.beginPath();
@@ -1082,9 +997,7 @@ function drawIntroChameleon(){
     );
 
     introCtx.stroke();
-
   }
-
 }
 
 
@@ -1126,9 +1039,7 @@ function drawIntroBubbles(){
       185,
       "#ffd43b"
     );
-
   }
-
 }
 
 
@@ -1144,8 +1055,7 @@ function drawIntroBubble(
 
   introCtx.beginPath();
 
-  introCtx.fillStyle=
-    color;
+  introCtx.fillStyle=color;
 
   introCtx.arc(
     x,
@@ -1157,13 +1067,13 @@ function drawIntroBubble(
 
   introCtx.fill();
 
-  introCtx.strokeStyle=
-    "white";
-
+  introCtx.strokeStyle="white";
   introCtx.lineWidth=3;
 
   introCtx.stroke();
 
+
+  /* shine */
 
   introCtx.beginPath();
 
@@ -1179,7 +1089,6 @@ function drawIntroBubble(
   );
 
   introCtx.fill();
-
 }
 
 
@@ -1237,7 +1146,6 @@ function drawIntroCloud(
   introCtx.fill();
 
   introCtx.restore();
-
 }
 
 
@@ -1256,10 +1164,6 @@ const DROP_INTERVAL=4500;
 const MAX_MOVES=30;
 
 
-/*
-  現在の雰囲気を維持して4色
-*/
-
 const COLORS=[
 
   "#ff5a5a",
@@ -1273,8 +1177,11 @@ const COLORS=[
 ];
 
 
-let gameCanvas=null;
+/* ==================================================
+   GAME VARIABLES
+================================================== */
 
+let gameCanvas=null;
 let gameCtx=null;
 
 let board=[];
@@ -1282,7 +1189,6 @@ let board=[];
 let cellSize=50;
 
 let boardLeft=0;
-
 let boardTop=72;
 
 let moves=MAX_MOVES;
@@ -1297,6 +1203,8 @@ let animationId=null;
 
 let fallingBubbles=[];
 
+let rescueTimer=null;
+
 
 /* ==================================================
    TONGUE
@@ -1309,15 +1217,12 @@ let tongue={
   progress:0,
 
   startX:0,
-
   startY:0,
 
   targetX:0,
-
   targetY:0,
 
   group:null
-
 };
 
 
@@ -1373,20 +1278,12 @@ function startGame(){
 
   dropTimer=DROP_INTERVAL;
 
-  fallingBubbles=[];
-
-  tongue.active=false;
-
-  tongue.group=null;
-
-  lastTime=
-    performance.now();
+  lastTime=performance.now();
 
 
   document
     .getElementById("moves")
-    .textContent=
-    moves;
+    .textContent=moves;
 
 
   document
@@ -1395,9 +1292,26 @@ function startGame(){
     (DROP_INTERVAL/1000).toFixed(1);
 
 
+  fallingBubbles=[];
+
+  tongue.active=false;
+  tongue.group=null;
+
+
   resizeGame();
 
   createBoard();
+
+
+  /*
+
+    初期盤面に
+    必ず最低1つの
+    3個グループを確保
+
+  */
+
+  ensurePlayableBoard();
 
 
   gameCanvas.onpointerdown=
@@ -1409,13 +1323,11 @@ function startGame(){
     cancelAnimationFrame(
       animationId
     );
-
   }
 
 
   animationId=
     requestAnimationFrame(loop);
-
 }
 
 
@@ -1451,10 +1363,6 @@ function resizeGame(){
 
 
   boardTop=72;
-
-
-  updatePositions();
-
 }
 
 
@@ -1466,7 +1374,6 @@ function createBoard(){
 
   board=[];
 
-
   for(
     let row=0;
     row<ROWS;
@@ -1474,7 +1381,6 @@ function createBoard(){
   ){
 
     board[row]=[];
-
 
     for(
       let col=0;
@@ -1494,11 +1400,8 @@ function createBoard(){
       }else{
 
         board[row][col]=null;
-
       }
-
     }
-
   }
 
 
@@ -1526,19 +1429,8 @@ function createBoard(){
       b.y=b.targetY;
 
       b.falling=false;
-
     }
-
   }
-
-
-  /*
-    初期盤面が完全な運任せで
-    デッドロックにならないようにする。
-  */
-
-  ensurePlayableBoard();
-
 }
 
 
@@ -1555,7 +1447,6 @@ function createBubble(
   return{
 
     row:row,
-
     col:col,
 
     color:randomColor(),
@@ -1578,9 +1469,7 @@ function createBubble(
     fallVelocity:0,
 
     detached:false
-
   };
-
 }
 
 
@@ -1595,7 +1484,6 @@ function randomColor(){
       Math.random()*COLORS.length
     )
   ];
-
 }
 
 
@@ -1605,7 +1493,7 @@ function randomColor(){
 
 function updatePositions(){
 
-  if(!board)
+  if(!gameCanvas)
     return;
 
 
@@ -1628,11 +1516,6 @@ function updatePositions(){
         continue;
 
 
-      b.row=row;
-
-      b.col=col;
-
-
       b.x=
         boardLeft+
         col*cellSize+
@@ -1650,15 +1533,10 @@ function updatePositions(){
         !b.removing
       ){
 
-        b.y=
-          b.targetY;
-
+        b.y=b.targetY;
       }
-
     }
-
   }
-
 }
 
 
@@ -1759,7 +1637,6 @@ function drawBubble(b){
 
 
   gameCtx.restore();
-
 }
 
 
@@ -1780,14 +1657,12 @@ function getChameleonMouth(){
     x:x+62,
 
     y:y-14
-
   };
-
 }
 
 
 /* ==================================================
-   CHAMELEON
+   DRAW CHAMELEON
 ================================================== */
 
 function drawChameleon(){
@@ -1800,9 +1675,7 @@ function drawChameleon(){
 
   /* tail */
 
-  gameCtx.strokeStyle=
-    "#58a84a";
-
+  gameCtx.strokeStyle="#58a84a";
   gameCtx.lineWidth=7;
 
   gameCtx.beginPath();
@@ -1820,12 +1693,8 @@ function drawChameleon(){
 
   /* body */
 
-  gameCtx.fillStyle=
-    "#8fdc77";
-
-  gameCtx.strokeStyle=
-    "#58a84a";
-
+  gameCtx.fillStyle="#8fdc77";
+  gameCtx.strokeStyle="#58a84a";
   gameCtx.lineWidth=4;
 
   gameCtx.beginPath();
@@ -1841,7 +1710,6 @@ function drawChameleon(){
   );
 
   gameCtx.fill();
-
   gameCtx.stroke();
 
 
@@ -1858,14 +1726,12 @@ function drawChameleon(){
   );
 
   gameCtx.fill();
-
   gameCtx.stroke();
 
 
   /* eye */
 
-  gameCtx.fillStyle=
-    "white";
+  gameCtx.fillStyle="white";
 
   gameCtx.beginPath();
 
@@ -1879,14 +1745,11 @@ function drawChameleon(){
 
   gameCtx.fill();
 
-  gameCtx.strokeStyle=
-    "#333";
+  gameCtx.strokeStyle="#333";
 
   gameCtx.stroke();
 
-
-  gameCtx.fillStyle=
-    "#222";
+  gameCtx.fillStyle="#222";
 
   gameCtx.beginPath();
 
@@ -1903,9 +1766,7 @@ function drawChameleon(){
 
   /* mouth */
 
-  gameCtx.strokeStyle=
-    "#397d3e";
-
+  gameCtx.strokeStyle="#397d3e";
   gameCtx.lineWidth=4;
 
   gameCtx.beginPath();
@@ -1923,9 +1784,7 @@ function drawChameleon(){
 
   /* legs */
 
-  gameCtx.strokeStyle=
-    "#58a84a";
-
+  gameCtx.strokeStyle="#58a84a";
   gameCtx.lineWidth=6;
 
   gameCtx.beginPath();
@@ -1951,12 +1810,11 @@ function drawChameleon(){
   );
 
   gameCtx.stroke();
-
 }
 
 
 /* ==================================================
-   TONGUE
+   DRAW TONGUE
 ================================================== */
 
 function drawTongue(){
@@ -1965,21 +1823,26 @@ function drawTongue(){
     return;
 
 
-  let p=
-    tongue.progress;
+  const p=
+    Math.max(
+      0,
+      Math.min(
+        1,
+        tongue.progress
+      )
+    );
 
 
   let reach;
 
 
-  if(p<.5){
+  if(p<0.5){
 
-    reach=p/.5;
+    reach=p/0.5;
 
   }else{
 
     reach=1;
-
   }
 
 
@@ -1988,7 +1851,8 @@ function drawTongue(){
     (
       tongue.targetX-
       tongue.startX
-    )*reach;
+    )*
+    reach;
 
 
   const y=
@@ -1996,19 +1860,16 @@ function drawTongue(){
     (
       tongue.targetY-
       tongue.startY
-    )*reach;
+    )*
+    reach;
 
 
   gameCtx.save();
 
 
-  gameCtx.strokeStyle=
-    "#ff5555";
-
+  gameCtx.strokeStyle="#ff5555";
   gameCtx.lineWidth=8;
-
   gameCtx.lineCap="round";
-
 
   gameCtx.beginPath();
 
@@ -2025,8 +1886,7 @@ function drawTongue(){
   gameCtx.stroke();
 
 
-  gameCtx.fillStyle=
-    "#ff7777";
+  gameCtx.fillStyle="#ff7777";
 
   gameCtx.beginPath();
 
@@ -2042,12 +1902,11 @@ function drawTongue(){
 
 
   gameCtx.restore();
-
 }
 
 
 /* ==================================================
-   TAP
+   TAP BUBBLE
 ================================================== */
 
 function tapBubble(e){
@@ -2095,7 +1954,6 @@ function tapBubble(e){
   ){
 
     return;
-
   }
 
 
@@ -2117,7 +1975,6 @@ function tapBubble(e){
   if(group.length<3){
 
     return;
-
   }
 
 
@@ -2126,8 +1983,7 @@ function tapBubble(e){
 
   document
     .getElementById("moves")
-    .textContent=
-    moves;
+    .textContent=moves;
 
 
   const mouth=
@@ -2152,7 +2008,6 @@ function tapBubble(e){
   tongue.progress=0;
 
   tongue.active=true;
-
 }
 
 
@@ -2190,11 +2045,15 @@ function findSameColorGroup(
 
   while(queue.length){
 
-    const [
-      row,
-      col
-    ]=
+    const current=
       queue.shift();
+
+
+    const row=
+      current[0];
+
+    const col=
+      current[1];
 
 
     if(
@@ -2205,7 +2064,6 @@ function findSameColorGroup(
     ){
 
       continue;
-
     }
 
 
@@ -2257,48 +2115,18 @@ function findSameColorGroup(
       row,
       col+1
     ]);
-
   }
 
 
   return result;
-
 }
 
 
 /* ==================================================
-   REMOVE GROUP
-================================================== */
-
-function removeGroup(group){
-
-  for(const pos of group){
-
-    const b=
-      board[pos.row][pos.col];
-
-    if(b){
-
-      b.removing=true;
-
-      b.scale=1;
-
-    }
-
-  }
-
-}
-
-
-/* ==================================================
-   HAS PLAYABLE GROUP
+   CHECK PLAYABLE
 ================================================== */
 
 function hasPlayableGroup(){
-
-  const visited=
-    new Set();
-
 
   for(
     let row=0;
@@ -2315,15 +2143,8 @@ function hasPlayableGroup(){
       const b=
         board[row][col];
 
+
       if(!b)
-        continue;
-
-
-      const key=
-        row+","+col;
-
-
-      if(visited.has(key))
         continue;
 
 
@@ -2334,135 +2155,15 @@ function hasPlayableGroup(){
         );
 
 
-      for(const p of group){
-
-        visited.add(
-          p.row+","+p.col
-        );
-
-      }
-
-
       if(group.length>=3){
 
         return true;
-
       }
-
     }
-
   }
 
 
   return false;
-
-}
-
-
-/* ==================================================
-   FIND SIMPLE TRIPLE
-================================================== */
-
-function findTriplePositions(){
-
-  /*
-    横3個
-  */
-
-  for(
-    let row=0;
-    row<ROWS;
-    row++
-  ){
-
-    for(
-      let col=0;
-      col<COLS-2;
-      col++
-    ){
-
-      if(
-        board[row][col] &&
-        board[row][col+1] &&
-        board[row][col+2]
-      ){
-
-        return [
-
-          {
-            row:row,
-            col:col
-          },
-
-          {
-            row:row,
-            col:col+1
-          },
-
-          {
-            row:row,
-            col:col+2
-          }
-
-        ];
-
-      }
-
-    }
-
-  }
-
-
-  /*
-    縦3個
-  */
-
-  for(
-    let row=0;
-    row<ROWS-2;
-    row++
-  ){
-
-    for(
-      let col=0;
-      col<COLS;
-      col++
-    ){
-
-      if(
-        board[row][col] &&
-        board[row+1][col] &&
-        board[row+2][col]
-      ){
-
-        return [
-
-          {
-            row:row,
-            col:col
-          },
-
-          {
-            row:row+1,
-            col:col
-          },
-
-          {
-            row:row+2,
-            col:col
-          }
-
-        ];
-
-      }
-
-    }
-
-  }
-
-
-  return null;
-
 }
 
 
@@ -2476,60 +2177,11 @@ function ensurePlayableBoard(){
     return;
 
 
-  /*
-    すでに消せるなら触らない。
-  */
-
   if(hasPlayableGroup())
     return;
 
 
-  /*
-    まず既存の3連続位置があれば、
-    色だけ合わせる。
-
-    これなら盤面全体を
-    シャッフルしないので、
-    見た目が大きく変わらない。
-  */
-
-  const triple=
-    findTriplePositions();
-
-
-  if(triple){
-
-    const color=
-      triple.length>0 &&
-      board[
-        triple[0].row
-      ][
-        triple[0].col
-      ].color;
-
-
-    for(const p of triple){
-
-      board[p.row][p.col].color=
-        color;
-
-    }
-
-
-    return;
-
-  }
-
-
-  /*
-    盤面に3個以上あれば、
-    最初のバブルから近い空き場所へ
-    最小限だけ移動して3個を作る。
-  */
-
   const occupied=[];
-
-  const empty=[];
 
 
   for(
@@ -2550,28 +2202,25 @@ function ensurePlayableBoard(){
           row:row,
           col:col
         });
-
-      }else{
-
-        empty.push({
-          row:row,
-          col:col
-        });
-
       }
-
     }
-
   }
 
 
-  if(occupied.length<3)
+  if(occupied.length<3){
+
     return;
+  }
 
 
   /*
-    近くの3マスが空いている場所を探す。
+    まず既に隣接している
+    3マスを探す。
+
+    見つけた場合は
+    その3つの色だけを変更。
   */
+
 
   for(
     let row=0;
@@ -2585,138 +2234,25 @@ function ensurePlayableBoard(){
       col++
     ){
 
-      const positions=[
+      if(
+        board[row][col] &&
+        board[row][col+1] &&
+        board[row][col+2]
+      ){
 
-        {
-          row:row,
-          col:col
-        },
+        const color=
+          board[row][col].color;
 
-        {
-          row:row,
-          col:col+1
-        },
-
-        {
-          row:row,
-          col:col+2
-        }
-
-      ];
-
-
-      const available=
-        positions.filter(
-          p=>!board[p.row][p.col]
-        );
-
-
-      if(available.length>=2){
-
-        const source1=
-          occupied[0];
-
-        const source2=
-          occupied[1];
-
-        const source3=
-          occupied[2];
-
-
-        const bubbles=[
-
-          board[
-            source1.row
-          ][
-            source1.col
-          ],
-
-          board[
-            source2.row
-          ][
-            source2.col
-          ],
-
-          board[
-            source3.row
-          ][
-            source3.col
-          ]
-
-        ];
-
-
-        /*
-          元位置を空ける。
-        */
-
-        for(const s of [
-          source1,
-          source2,
-          source3
-        ]){
-
-          board[
-            s.row
-          ][
-            s.col
-          ]=null;
-
-        }
-
-
-        /*
-          3マスへ配置。
-        */
-
-        for(
-          let i=0;
-          i<3;
-          i++
-        ){
-
-          const p=
-            positions[i];
-
-          const b=
-            bubbles[i];
-
-
-          b.row=p.row;
-
-          b.col=p.col;
-
-          b.color=COLORS[0];
-
-          b.falling=false;
-
-          b.removing=false;
-
-          b.detached=false;
-
-          board[
-            p.row
-          ][
-            p.col
-          ]=b;
-
-        }
-
+        board[row][col+1].color=color;
+        board[row][col+2].color=color;
 
         updatePositions();
 
         return;
-
       }
-
     }
-
   }
 
-
-  /*
-    横が無理なら縦。
-  */
 
   for(
     let row=0;
@@ -2730,117 +2266,291 @@ function ensurePlayableBoard(){
       col++
     ){
 
-      const positions=[
+      if(
+        board[row][col] &&
+        board[row+1][col] &&
+        board[row+2][col]
+      ){
 
-        {
-          row:row,
-          col:col
-        },
+        const color=
+          board[row][col].color;
 
-        {
-          row:row+1,
-          col:col
-        },
-
-        {
-          row:row+2,
-          col:col
-        }
-
-      ];
-
-
-      const available=
-        positions.filter(
-          p=>!board[p.row][p.col]
-        );
-
-
-      if(available.length>=2){
-
-        const bubbles=[
-
-          board[
-            occupied[0].row
-          ][
-            occupied[0].col
-          ],
-
-          board[
-            occupied[1].row
-          ][
-            occupied[1].col
-          ],
-
-          board[
-            occupied[2].row
-          ][
-            occupied[2].col
-          ]
-
-        ];
-
-
-        for(
-          let i=0;
-          i<3;
-          i++
-        ){
-
-          board[
-            occupied[i].row
-          ][
-            occupied[i].col
-          ]=null;
-
-        }
-
-
-        for(
-          let i=0;
-          i<3;
-          i++
-        ){
-
-          const p=
-            positions[i];
-
-          const b=
-            bubbles[i];
-
-
-          b.row=p.row;
-
-          b.col=p.col;
-
-          b.color=COLORS[0];
-
-          b.falling=false;
-
-          b.removing=false;
-
-          b.detached=false;
-
-
-          board[
-            p.row
-          ][
-            p.col
-          ]=b;
-
-        }
-
+        board[row+1][col].color=color;
+        board[row+2][col].color=color;
 
         updatePositions();
 
         return;
-
       }
-
     }
-
   }
 
+
+  /*
+    既存の隣接3マスがない場合。
+
+    空いている3マスを探して
+    バブル3個だけ移動。
+
+    全盤面シャッフルはしない。
+  */
+
+
+  let targetCells=null;
+
+
+  for(
+    let row=0;
+    row<ROWS;
+    row++
+  ){
+
+    for(
+      let col=0;
+      col<COLS-2;
+      col++
+    ){
+
+      if(
+        !board[row][col] &&
+        !board[row][col+1] &&
+        !board[row][col+2]
+      ){
+
+        targetCells=[
+          {row:row,col:col},
+          {row:row,col:col+1},
+          {row:row,col:col+2}
+        ];
+
+        break;
+      }
+    }
+
+    if(targetCells)
+      break;
+  }
+
+
+  if(!targetCells){
+
+    for(
+      let row=0;
+      row<ROWS-2;
+      row++
+    ){
+
+      for(
+        let col=0;
+        col<COLS;
+        col++
+      ){
+
+        if(
+          !board[row][col] &&
+          !board[row+1][col] &&
+          !board[row+2][col]
+        ){
+
+          targetCells=[
+            {row:row,col:col},
+            {row:row+1,col:col},
+            {row:row+2,col:col}
+          ];
+
+          break;
+        }
+      }
+
+      if(targetCells)
+        break;
+    }
+  }
+
+
+  if(!targetCells){
+
+    /*
+      完全に空きがない場合は
+      最小限、3個の色だけ変更。
+    */
+
+    const first=
+      occupied[0];
+
+    const second=
+      occupied[1];
+
+    const third=
+      occupied[2];
+
+
+    const color=
+      board[first.row][first.col].color;
+
+
+    board[second.row][second.col].color=color;
+    board[third.row][third.col].color=color;
+
+    return;
+  }
+
+
+  const chosen=[];
+
+
+  for(let i=0;i<3;i++){
+
+    const pos=
+      occupied[
+        occupied.length-1-i
+      ];
+
+    const b=
+      board[pos.row][pos.col];
+
+    if(b){
+
+      board[pos.row][pos.col]=null;
+
+      chosen.push(b);
+    }
+  }
+
+
+  for(
+    let i=0;
+    i<3;
+    i++
+  ){
+
+    const cell=
+      targetCells[i];
+
+    const b=
+      chosen[i];
+
+    if(!b)
+      continue;
+
+
+    b.row=cell.row;
+    b.col=cell.col;
+
+    b.color=
+      chosen[0].color;
+
+    b.falling=false;
+    b.removing=false;
+    b.detached=false;
+
+    board[cell.row][cell.col]=b;
+  }
+
+
+  updatePositions();
+}
+
+
+/* ==================================================
+   REMOVE GROUP
+================================================== */
+
+function removeGroup(group){
+
+  for(const pos of group){
+
+    const b=
+      board[pos.row][pos.col];
+
+
+    if(!b)
+      continue;
+
+
+    b.removing=true;
+  }
+}
+
+
+/* ==================================================
+   COMPACT COLUMNS
+================================================== */
+
+/*
+
+  消した場所を詰める。
+
+  このゲームでは
+  バブルは「上から積まれる」ので、
+  各列を上方向へ詰める。
+
+*/
+
+function compactColumns(){
+
+  for(
+    let col=0;
+    col<COLS;
+    col++
+  ){
+
+    const bubbles=[];
+
+
+    for(
+      let row=0;
+      row<ROWS;
+      row++
+    ){
+
+      const b=
+        board[row][col];
+
+
+      if(
+        b &&
+        !b.removing
+      ){
+
+        bubbles.push(b);
+      }
+    }
+
+
+    for(
+      let row=0;
+      row<ROWS;
+      row++
+    ){
+
+      board[row][col]=null;
+    }
+
+
+    for(
+      let row=0;
+      row<bubbles.length;
+      row++
+    ){
+
+      const b=
+        bubbles[row];
+
+
+      b.row=row;
+      b.col=col;
+
+      b.falling=true;
+      b.removing=false;
+      b.detached=false;
+
+      board[row][col]=b;
+    }
+  }
+
+
+  updatePositions();
 }
 
 
@@ -2857,7 +2567,7 @@ function findTopConnected(){
 
 
   /*
-    最上段を支柱にする。
+    一番上の段を支柱にする
   */
 
   for(
@@ -2872,19 +2582,21 @@ function findTopConnected(){
         0,
         col
       ]);
-
     }
-
   }
 
 
   while(queue.length){
 
-    const [
-      row,
-      col
-    ]=
+    const current=
       queue.shift();
+
+
+    const row=
+      current[0];
+
+    const col=
+      current[1];
 
 
     if(
@@ -2895,7 +2607,6 @@ function findTopConnected(){
     ){
 
       continue;
-
     }
 
 
@@ -2907,7 +2618,11 @@ function findTopConnected(){
       continue;
 
 
-    if(!board[row][col])
+    const b=
+      board[row][col];
+
+
+    if(!b)
       continue;
 
 
@@ -2933,12 +2648,10 @@ function findTopConnected(){
       row,
       col+1
     ]);
-
   }
 
 
   return connected;
-
 }
 
 
@@ -2969,6 +2682,7 @@ function findFloating(){
       const b=
         board[row][col];
 
+
       if(!b)
         continue;
 
@@ -2983,16 +2697,12 @@ function findFloating(){
           row:row,
           col:col
         });
-
       }
-
     }
-
   }
 
 
   return floating;
-
 }
 
 
@@ -3009,7 +2719,6 @@ function dropFloatingBubbles(){
   if(floating.length===0){
 
     return false;
-
   }
 
 
@@ -3034,23 +2743,120 @@ function dropFloatingBubbles(){
 
 
     board[pos.row][pos.col]=null;
-
   }
 
 
   return true;
-
 }
 
 
 /* ==================================================
-   AFTER REMOVE
+   FALLING BUBBLES
+================================================== */
+
+function updateFallingBubbles(delta){
+
+  for(
+    let i=fallingBubbles.length-1;
+    i>=0;
+    i--
+  ){
+
+    const b=
+      fallingBubbles[i];
+
+
+    b.fallVelocity +=
+      0.0012*delta;
+
+
+    b.y +=
+      b.fallVelocity*delta;
+
+
+    if(
+      b.y>
+      gameCanvas.height+
+      cellSize
+    ){
+
+      fallingBubbles.splice(
+        i,
+        1
+      );
+    }
+  }
+}
+
+
+/* ==================================================
+   UPDATE BOARD FALL
+================================================== */
+
+function updateBoardFall(delta){
+
+  for(
+    let row=0;
+    row<ROWS;
+    row++
+  ){
+
+    for(
+      let col=0;
+      col<COLS;
+      col++
+    ){
+
+      const b=
+        board[row][col];
+
+
+      if(!b)
+        continue;
+
+
+      if(!b.falling){
+
+        b.y=b.targetY;
+
+        continue;
+      }
+
+
+      const distance=
+        b.targetY-b.y;
+
+
+      if(
+        Math.abs(distance)<1
+      ){
+
+        b.y=b.targetY;
+
+        b.falling=false;
+
+      }else{
+
+        b.y +=
+          distance*
+          Math.min(
+            1,
+            delta/160
+          );
+      }
+    }
+  }
+}
+
+
+/* ==================================================
+   AFTER REMOVAL
 ================================================== */
 
 function processAfterRemoval(){
 
   /*
-    消去対象を盤面から削除
+    消去対象を削除
   */
 
   for(
@@ -3075,19 +2881,22 @@ function processAfterRemoval(){
       ){
 
         board[row][col]=null;
-
       }
-
     }
-
   }
 
 
-  updatePositions();
+  /*
+    まず列を上へ詰める
+  */
+
+  compactColumns();
 
 
   /*
-    浮いたバブルを落とす
+    その後、
+    上とつながっていない
+    バブルを落とす
   */
 
   const dropped=
@@ -3097,8 +2906,8 @@ function processAfterRemoval(){
   if(dropped){
 
     /*
-      落下が終わってから
-      連鎖を確認する。
+      浮いたバブルが落ちた後に
+      連鎖をチェック
     */
 
     setTimeout(
@@ -3106,19 +2915,15 @@ function processAfterRemoval(){
         if(gameState==="playing"){
 
           checkChain();
-
         }
       },
       350
     );
 
-
   }else{
 
     checkChain();
-
   }
-
 }
 
 
@@ -3179,18 +2984,14 @@ function checkChain(){
         visited.add(
           p.row+","+p.col
         );
-
       }
 
 
       if(group.length>=3){
 
         groups.push(group);
-
       }
-
     }
-
   }
 
 
@@ -3198,15 +2999,24 @@ function checkChain(){
 
     checkClearAndMoves();
 
-    return;
+    if(
+      gameState==="playing"
+    ){
 
+      ensurePlayableBoard();
+    }
+
+    return;
   }
 
+
+  /*
+    見つかったグループを消す
+  */
 
   for(const group of groups){
 
     removeGroup(group);
-
   }
 
 
@@ -3215,12 +3025,10 @@ function checkChain(){
       if(gameState==="playing"){
 
         processAfterRemoval();
-
       }
     },
     220
   );
-
 }
 
 
@@ -3252,11 +3060,8 @@ function checkClearAndMoves(){
       if(board[row][col]){
 
         count++;
-
       }
-
     }
-
   }
 
 
@@ -3264,7 +3069,10 @@ function checkClearAndMoves(){
     全消し
   */
 
-  if(count===0){
+  if(
+    count===0 &&
+    fallingBubbles.length===0
+  ){
 
     gameOver(
       "CLEAR!",
@@ -3272,7 +3080,6 @@ function checkClearAndMoves(){
     );
 
     return;
-
   }
 
 
@@ -3290,9 +3097,46 @@ function checkClearAndMoves(){
       "GAME OVER",
       "No tongues left!"
     );
-
   }
+}
 
+
+/* ==================================================
+   GAME OVER
+================================================== */
+
+function gameOver(
+  title,
+  text
+){
+
+  if(gameState!=="playing")
+    return;
+
+
+  gameState=
+    title==="CLEAR!"
+    ? "clear"
+    : "gameover";
+
+
+  document
+    .getElementById("resultTitle")
+    .textContent=title;
+
+
+  document
+    .getElementById("resultText")
+    .textContent=text;
+
+
+  document
+    .getElementById("resultScreen")
+    .style.display="flex";
+
+
+  tongue.active=false;
+  tongue.group=null;
 }
 
 
@@ -3307,7 +3151,8 @@ function addNewRow(){
 
 
   /*
-    最下段が埋まっていたら終了。
+    下端が埋まっていたら
+    新しい列を入れる前に終了
   */
 
   for(
@@ -3324,14 +3169,12 @@ function addNewRow(){
       );
 
       return;
-
     }
-
   }
 
 
   /*
-    上から下へ1段ずつ移動。
+    下へ1段ずつ移動
   */
 
   for(
@@ -3356,20 +3199,16 @@ function addNewRow(){
       if(b){
 
         b.row=row;
-
         b.col=col;
 
         b.falling=true;
-
       }
-
     }
-
   }
 
 
   /*
-    新しい最上段。
+    新しい最上段
   */
 
   for(
@@ -3401,133 +3240,15 @@ function addNewRow(){
 
 
     board[0][col]=b;
-
   }
 
 
   updatePositions();
-
-
-  /*
-    新しい段ができた直後に
-    デッドロックになっていたら
-    最小限の救済を行う。
-  */
-
 }
 
 
 /* ==================================================
-   UPDATE FALLING BUBBLES
-================================================== */
-
-function updateFallingBubbles(delta){
-
-  for(
-    let i=fallingBubbles.length-1;
-    i>=0;
-    i--
-  ){
-
-    const b=
-      fallingBubbles[i];
-
-
-    b.fallVelocity+=
-      0.0012*delta;
-
-
-    b.y+=
-      b.fallVelocity*delta;
-
-
-    if(
-      b.y>
-      gameCanvas.height+
-      cellSize
-    ){
-
-      fallingBubbles.splice(
-        i,
-        1
-      );
-
-    }
-
-  }
-
-}
-
-
-/* ==================================================
-   UPDATE BOARD FALL
-================================================== */
-
-function updateBoardFall(delta){
-
-  for(
-    let row=0;
-    row<ROWS;
-    row++
-  ){
-
-    for(
-      let col=0;
-      col<COLS;
-      col++
-    ){
-
-      const b=
-        board[row][col];
-
-
-      if(!b)
-        continue;
-
-
-      if(!b.falling){
-
-        b.y=
-          b.targetY;
-
-        continue;
-
-      }
-
-
-      const distance=
-        b.targetY-b.y;
-
-
-      if(
-        Math.abs(distance)<1
-      ){
-
-        b.y=
-          b.targetY;
-
-        b.falling=false;
-
-      }else{
-
-        b.y+=
-          distance*
-          Math.min(
-            1,
-            delta/160
-          );
-
-      }
-
-    }
-
-  }
-
-}
-
-
-/* ==================================================
-   TONGUE FINISH
+   FINISH TONGUE
 ================================================== */
 
 function finishTongue(){
@@ -3537,7 +3258,6 @@ function finishTongue(){
     tongue.active=false;
 
     return;
-
   }
 
 
@@ -3556,17 +3276,15 @@ function finishTongue(){
       if(gameState==="playing"){
 
         processAfterRemoval();
-
       }
     },
     180
   );
-
 }
 
 
 /* ==================================================
-   GAME UPDATE
+   UPDATE
 ================================================== */
 
 function update(delta){
@@ -3581,18 +3299,18 @@ function update(delta){
 
   if(tongue.active){
 
-    tongue.progress+=
+    tongue.progress +=
       delta/650;
 
 
     if(
-      tongue.progress>=.5
+      tongue.progress>=0.5 &&
+      tongue.progress<0.5+
+      delta/650
     ){
 
       finishTongue();
-
     }
-
   }
 
 
@@ -3603,11 +3321,15 @@ function update(delta){
   updateBoardFall(delta);
 
 
+  /*
+    浮遊バブル落下
+  */
+
   updateFallingBubbles(delta);
 
 
   /*
-    新しい列タイマー
+    新しい列のタイマー
   */
 
   dropTimer-=delta;
@@ -3618,9 +3340,7 @@ function update(delta){
     dropTimer=
       DROP_INTERVAL;
 
-
     addNewRow();
-
   }
 
 
@@ -3634,8 +3354,7 @@ function update(delta){
 
 
   /*
-    バブルが完全に落ち着いたら
-    盤面を確認。
+    落下が全部終わった後
   */
 
   if(
@@ -3643,54 +3362,8 @@ function update(delta){
     fallingBubbles.length===0
   ){
 
-    let bottomFull=true;
-
-
-    for(
-      let col=0;
-      col<COLS;
-      col++
-    ){
-
-      if(!board[ROWS-1][col]){
-
-        bottomFull=false;
-
-        break;
-
-      }
-
-    }
-
-
-    if(bottomFull){
-
-      gameOver(
-        "GAME OVER",
-        "The bubbles reached the bottom!"
-      );
-
-      return;
-
-    }
-
-
-    /*
-      消せるグループがない場合だけ
-      救済処理をする。
-    */
-
-    if(!hasPlayableGroup()){
-
-      ensurePlayableBoard();
-
-    }
-
-
     checkClearAndMoves();
-
   }
-
 }
 
 
@@ -3699,6 +3372,10 @@ function update(delta){
 ================================================== */
 
 function drawBackground(){
+
+  /*
+    clouds
+  */
 
   drawCloud(
     75,
@@ -3714,6 +3391,10 @@ function drawBackground(){
   );
 
 
+  /*
+    ground
+  */
+
   gameCtx.fillStyle=
     "#a7e88f";
 
@@ -3724,7 +3405,6 @@ function drawBackground(){
     gameCanvas.width,
     40
   );
-
 }
 
 
@@ -3791,12 +3471,11 @@ function drawCloud(
 
 
   gameCtx.restore();
-
 }
 
 
 /* ==================================================
-   DRAW FALLING
+   DRAW FALLING BUBBLES
 ================================================== */
 
 function drawFallingBubbles(){
@@ -3806,49 +3485,7 @@ function drawFallingBubbles(){
   ){
 
     drawBubble(b);
-
   }
-
-}
-
-
-/* ==================================================
-   GAME OVER / CLEAR
-================================================== */
-
-function gameOver(
-  title,
-  message
-){
-
-  if(gameState==="gameover")
-    return;
-
-
-  gameState="gameover";
-
-
-  tongue.active=false;
-
-  tongue.group=null;
-
-
-  document
-    .getElementById("resultTitle")
-    .textContent=
-    title;
-
-
-  document
-    .getElementById("resultText")
-    .textContent=
-    message;
-
-
-  document
-    .getElementById("resultScreen")
-    .style.display="flex";
-
 }
 
 
@@ -3858,14 +3495,13 @@ function gameOver(
 
 function loop(time){
 
-  if(!gameCtx)
-    return;
-
-
   const delta=
     Math.min(
       50,
-      time-lastTime
+      Math.max(
+        0,
+        time-lastTime
+      )
     );
 
 
@@ -3884,7 +3520,7 @@ function loop(time){
 
 
   /*
-    ボード
+    board
   */
 
   for(
@@ -3902,35 +3538,33 @@ function loop(time){
       drawBubble(
         board[row][col]
       );
-
     }
-
   }
 
 
   /*
-    浮遊バブル
+    falling
   */
 
   drawFallingBubbles();
 
 
   /*
-    カメレオン
+    chameleon
   */
 
   drawChameleon();
 
 
   /*
-    舌
+    tongue
   */
 
   drawTongue();
 
 
   /*
-    更新
+    update
   */
 
   update(delta);
@@ -3938,7 +3572,6 @@ function loop(time){
 
   animationId=
     requestAnimationFrame(loop);
-
 }
 
 
@@ -3949,18 +3582,26 @@ function loop(time){
 window.addEventListener(
   "resize",
   ()=>{
-
+    
     if(!gameCanvas)
       return;
 
 
     resizeGame();
 
+    updatePositions();
   }
 );
+
+
+/* ==================================================
+   INITIAL TITLE STATE
+================================================== */
+
+gameState="title";
+
 
 </script>
 
 </body>
-
 </html>
